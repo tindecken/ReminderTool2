@@ -18,11 +18,13 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 563,
+    height: 30,
     useContentSize: true,
-    width: 1000
+    width: 350,
+    transparent: true,
+    resizable: false
   })
-
+  mainWindow.setMenu(null)
   mainWindow.loadURL(winURL)
 
   mainWindow.on('closed', () => {
