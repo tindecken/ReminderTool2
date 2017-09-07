@@ -1,4 +1,5 @@
 .DS_Store
+!node_modules/bulma/css/bulma.css
 dist/electron/*
 dist/web/*
 build/*
@@ -8,4 +9,3 @@ npm-debug.log
 npm-debug.log.*
 thumbs.db
 !.gitkeep
-!node_modules/bulma/css/bulma.css
