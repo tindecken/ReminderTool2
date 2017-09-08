@@ -21,8 +21,8 @@ function createWindow () {
     height: 30,
     useContentSize: true,
     width: 350,
-    transparent: true,
-    resizable: false
+    // transparent: true,
+    resizable: true
   })
   mainWindow.setMenu(null)
   mainWindow.loadURL(winURL)
