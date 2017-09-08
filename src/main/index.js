@@ -18,11 +18,13 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 30,
+    // height: 48,
+    height: 600,
     useContentSize: true,
-    width: 350,
-    // transparent: true,
-    resizable: true
+    // width: 550,
+    width: 1000,
+    transparent: true,
+    resizable: false
   })
   mainWindow.setMenu(null)
   mainWindow.loadURL(winURL)
@@ -30,6 +32,11 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  // mainWindow.on('minimize',function(event){
+  //     event.preventDefault()
+  //         mainWindow.hide();
+  // });
 }
 
 app.on('ready', createWindow)

@@ -3,7 +3,7 @@
       <div class="columns is-gapless is-mobile">
           <div class="column is-three-quaters">
             <div class="control has-icons-right">
-              <input v-model="number" v-on:keyup="isDisabled" v-validate.initial="number" data-vv-rules="required|between:1750,3600" class="input is-info" type="text" placeholder="Input number between 1750-3600">
+              <input autofocus="true" v-model="number" v-on:keyup="isDisabled" v-validate.initial="number" data-vv-rules="required|between:1750,3600" class="input is-info is-large" type="text" placeholder="Input number between 1750-3600">
               <span class="icon is-right">
                 <i :class="{'fa fa-check': !disabled, 'fa fa-exclamation-triangle': disabled}"></i>
               </span>
@@ -14,14 +14,14 @@
               <!-- <p class="text-danger" v-if="errors.has('number')">{{ errors.first('number') }}</p> -->
           </div>
           <div class="column is-narrow-mobile is-narrow-tablet is-narrow-desktop">
-              <a class="button is-outlined is-info" v-bind:disabled="disabled">GO !</a>
+              <a class="button is-outlined is-info is-large" v-bind:disabled="disabled" v-on:click="go(number)">GO !</a>
           </div>
       </div>
   </section>
 </template>
 
 <script>
-  
+  const ipcRenderer = require('electron').ipcRenderer
   export default {
     name: 'home-page',
     data() {
@@ -41,6 +41,9 @@
         }else{
           return this.disabled = false
         }
+      },
+      go(){
+        ipcRenderer.send('go', )
       }
     }
   }
