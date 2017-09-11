@@ -14,7 +14,7 @@
               <!-- <p class="text-danger" v-if="errors.has('number')">{{ errors.first('number') }}</p> -->
           </div>
           <div class="column is-narrow-mobile is-narrow-tablet is-narrow-desktop">
-              <a class="button is-outlined is-info is-large" v-bind:disabled="disabled" v-on:click="go(number)">GO !</a>
+              <a class="button is-outlined is-info is-large" v-on:click="!disabled && go(number)" v-bind:disabled="disabled">GO !</a>
           </div>
       </div>
   </section>
@@ -43,7 +43,8 @@
         }
       },
       go(){
-        ipcRenderer.send('go', )
+        console.log('Number [' + this.number + "]")
+        ipcRenderer.send('go', this.number)
       }
     }
   }

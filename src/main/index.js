@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain, Tray, Menu } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -9,6 +9,11 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow
+let tray
+let timer
+const contextMenu = Menu.buildFromTemplate([
+  {label: 'Exit', type: 'normal', role: 'quit', icon: 'static/exit.png'},
+])
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -33,6 +38,18 @@ function createWindow () {
     mainWindow = null
   })
 
+  ipcMain.on('go', (event, number) => {
+    console.log('Number [' + number + "]")
+    mainWindow.hide()
+    tray = new Tray('static/icon_normal.ico')
+    tray.setContextMenu(contextMenu)
+    tray.on('double-click', () => {
+      stopCounting(timer)
+      startCounting(number)
+    })
+    startCounting(number)
+    // mainWindow.minimize()
+  })
   // mainWindow.on('minimize',function(event){
   //     event.preventDefault()
   //         mainWindow.hide();
@@ -52,6 +69,25 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+function startCounting(number){
+  tray.setImage('static/icon_normal.ico')
+  console.log('Start Counting [' + number + ']')
+  timer = setInterval(()=>{
+    number--
+    console.log("Number [" + number + "]")
+    tray.setToolTip("Alert will display after: " + number + " seconds")
+    if(number === 1745){
+      stopCounting(timer)
+    }
+  },1000)
+}
+
+function stopCounting(timer){
+  tray.setImage('static/icon_alert.ico')
+  tray.setToolTip('Stopped')
+  clearInterval(timer)
+}
 
 /**
  * Auto Updater
