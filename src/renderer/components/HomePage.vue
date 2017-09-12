@@ -3,7 +3,7 @@
       <div class="columns is-gapless is-mobile">
           <div class="column is-three-quaters">
             <div class="control has-icons-right">
-              <input autofocus="true" v-model="number" v-on:keyup="isDisabled" v-validate.initial="number" data-vv-rules="required|between:1750,3600" class="input is-info is-large" type="text" placeholder="Input number between 1750-3600">
+              <input autofocus="true" v-model="number" v-on:keyup="isDisabled" v-validate="'required|between:1750,3600'" class="input is-info is-large" type="text" placeholder="Input number between 1750-3600">
               <span class="icon is-right">
                 <i :class="{'fa fa-check': !disabled, 'fa fa-exclamation-triangle': disabled}"></i>
               </span>
