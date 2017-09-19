@@ -12,7 +12,7 @@ let mainWindow
 let tray
 let timer
 const contextMenu = Menu.buildFromTemplate([
-  {label: 'Exit', type: 'normal', role: 'quit', icon: 'static/imgs/exit.png'},
+  {label: 'Exit', type: 'normal', role: 'quit', icon: __static + '/imgs/exit.png'},
 ])
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
@@ -41,7 +41,7 @@ function createWindow () {
   ipcMain.on('go', (event, number) => {
     console.log('Number [' + number + "]")
     mainWindow.hide()
-    tray = new Tray('static/imgs/icon_normal.ico')
+    tray = new Tray(__static + '/imgs/icon_normal.ico')
     tray.setContextMenu(contextMenu)
     tray.on('double-click', () => {
       stopCounting(timer)
@@ -67,7 +67,7 @@ app.on('activate', () => {
 })
 
 function startCounting(number){
-  tray.setImage('static/imgs/icon_normal.ico')
+  tray.setImage(__static + '/imgs/icon_normal.ico')
   console.log('Start Counting [' + number + ']')
   timer = setInterval(()=>{
     number--
@@ -80,7 +80,7 @@ function startCounting(number){
 }
 
 function stopCounting(timer){
-  tray.setImage('static/imgs/icon_alert.ico')
+  tray.setImage(__static + '/imgs/icon_alert.ico')
   tray.setToolTip('Stopped')
   clearInterval(timer)
 }
