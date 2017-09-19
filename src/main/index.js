@@ -12,7 +12,7 @@ let mainWindow
 let tray
 let timer
 const contextMenu = Menu.buildFromTemplate([
-  {label: 'Exit', type: 'normal', role: 'quit', icon: 'static/exit.png'},
+  {label: 'Exit', type: 'normal', role: 'quit', icon: 'static/imgs/exit.png'},
 ])
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
@@ -41,19 +41,15 @@ function createWindow () {
   ipcMain.on('go', (event, number) => {
     console.log('Number [' + number + "]")
     mainWindow.hide()
-    tray = new Tray('static/icon_normal.ico')
+    tray = new Tray('static/imgs/icon_normal.ico')
     tray.setContextMenu(contextMenu)
     tray.on('double-click', () => {
       stopCounting(timer)
       startCounting(number)
     })
     startCounting(number)
-    // mainWindow.minimize()
   })
-  // mainWindow.on('minimize',function(event){
-  //     event.preventDefault()
-  //         mainWindow.hide();
-  // });
+
 }
 
 app.on('ready', createWindow)
@@ -71,12 +67,12 @@ app.on('activate', () => {
 })
 
 function startCounting(number){
-  tray.setImage('static/icon_normal.ico')
+  tray.setImage('static/imgs/icon_normal.ico')
   console.log('Start Counting [' + number + ']')
   timer = setInterval(()=>{
     number--
     console.log("Number [" + number + "]")
-    tray.setToolTip("Alert will display after: " + number + " seconds")
+    tray.setToolTip(" " + number + "s left")
     if(number === 1745){
       stopCounting(timer)
     }
@@ -84,7 +80,7 @@ function startCounting(number){
 }
 
 function stopCounting(timer){
-  tray.setImage('static/icon_alert.ico')
+  tray.setImage('static/imgs/icon_alert.ico')
   tray.setToolTip('Stopped')
   clearInterval(timer)
 }
