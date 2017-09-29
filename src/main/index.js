@@ -23,11 +23,9 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    // height: 48,
-    height: 600,
+    height: 60,
     useContentSize: true,
-    // width: 550,
-    width: 1000,
+    width: 550,
     transparent: true,
     resizable: false
   })
@@ -73,7 +71,7 @@ function startCounting(number){
     number--
     console.log("Number [" + number + "]")
     tray.setToolTip(" " + number + "s left")
-    if(number === 1745){
+    if(number === 0){
       stopCounting(timer)
     }
   },1000)
