@@ -1,21 +1,53 @@
 <template>
   <section class="section">
-      <div class="columns is-gapless is-mobile">
-          <div class="column is-three-quaters">
-            <div class="control has-icons-right">
-              <!-- comment one in two <input> for validation in 2 environment -->
-              <!-- <input autofocus="true" v-model="number" v-on:keyup="isDisabled" v-validate.initial="number" data-vv-rules="required|between:1750,3600" class="input is-info is-large" type="text" placeholder="Input number between 1750-3600"> -->
-              <input autofocus="true" v-model="number" v-on:keyup="isDisabled" v-validate="'required|between:1750,3600'" class="input is-info is-large" type="text" placeholder="Input number between 1750-3600">
-              <span class="icon is-right">
-                <i :class="{'fa fa-check': !disabled, 'fa fa-exclamation-triangle': disabled}"></i>
+    <div class="container">
+      <div class="columns is-gapless">
+        <div class="column is-narrow">
+          <div class="" style="width: 100px;background-color:#ffdd57;">
+            <a class="button is-primary">
+              <span class="icon">
+                <i class="fa fa-cog is-large"></i>
               </span>
-            </div>
+              <span>Settings</span>
+            </a>
           </div>
-          <div class="column is-narrow-mobile is-narrow-tablet is-narrow-desktop">
-              <a class="button is-outlined is-info is-large" v-on:click="!disabled && go(number)" v-bind:disabled="disabled">GO !</a>
+        </div>
+        <div class="column">
+          <div class="" style="background-color:#23d160;">
+            <a class="button is-primary">
+              <span class="icon">
+                <i class="fa fa-cog is-large"></i>
+              </span>
+              <span>Settings</span>
+            </a>
           </div>
+        </div>
       </div>
+      <div class="columns is-gapless">
+        <div class="column is-narrow">
+          <div class="" style="width: 100px;background-color:#ffdd57;">
+            <a class="button is-primary">
+              <span class="icon">
+                <i class="fa fa-cog is-large"></i>
+              </span>
+              <span>Settings</span>
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <div class="" style="background-color:#23d160;">
+            <a class="button is-primary">
+              <span class="icon">
+                <i class="fa fa-cog is-large"></i>
+              </span>
+              <span>Settings</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
+
 </template>
 
 <script>
