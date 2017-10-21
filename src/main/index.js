@@ -27,11 +27,11 @@ function createWindow () {
     useContentSize: true,
     width: 1024,
     transparent: true,
-    resizable: false
+    // resizable: true
   })
   mainWindow.setMenu(null)
   mainWindow.loadURL(winURL)
-
+  mainWindow.setResizable(true)
   mainWindow.on('closed', () => {
     mainWindow = null
   })

@@ -1,32 +1,14 @@
 <template>
   <section class="section">
-    <b-tabs type="is-toggle" expanded>
-        <b-tab-item label="Builds" icon="build">
-          <builds></builds>
-        </b-tab-item>
-        <b-tab-item label="Logs" icon="history">
-          <logs></logs>
-        </b-tab-item>
-        <b-tab-item label="Settings" icon="settings">
-          <settings></settings>
-        </b-tab-item>
-      </b-tabs>
+    <button>Builds</button>
   </section>
 
 </template>
 
 <script>
-import Builds from '../components/Builds.vue'
-import Logs from '../components/Logs.vue'
-import Settings from '../components/Settings.vue'
 const ipcRenderer = require("electron").ipcRenderer;
 export default {
-  name: "home-page",
-  components:{
-      Builds,
-      Logs,
-      Settings
-    },
+  name: "vue-builds",
   data() {
     return {
       // number: "",
