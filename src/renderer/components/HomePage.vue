@@ -16,41 +16,41 @@
 </template>
 
 <script>
-import Builds from '../components/Builds.vue'
-import Logs from '../components/Logs.vue'
-import Settings from '../components/Settings.vue'
-const ipcRenderer = require("electron").ipcRenderer;
-export default {
-  name: "home-page",
-  components:{
-      Builds,
-      Logs,
-      Settings
+  import Builds from '../components/Builds'
+  import Logs from '../components/Logs'
+  import Settings from '../components/Settings'
+  const ipcRenderer = require("electron").ipcRenderer;
+  export default {
+    name: "home-page",
+    components:{
+        Builds,
+        Logs,
+        Settings
+      },
+    data() {
+      return {
+        // number: "",
+        // disabled: true
+      };
     },
-  data() {
-    return {
-      // number: "",
-      // disabled: true
-    };
-  },
-  methods: {
-    // open(link) {
-    //   this.$electron.shell.openExternal(link);
-    // },
-    // isDisabled() {
-    //   // evaluate whatever you need to determine disabled here...
-    //   if (this.errors.any()) {
-    //     return (this.disabled = true);
-    //   } else {
-    //     return (this.disabled = false);
-    //   }
-    // },
-    // go() {
-    //   console.log("Number [" + this.number + "]");
-    //   ipcRenderer.send("go", this.number);
-    // }
-  }
-};
+    methods: {
+      // open(link) {
+      //   this.$electron.shell.openExternal(link);
+      // },
+      // isDisabled() {
+      //   // evaluate whatever you need to determine disabled here...
+      //   if (this.errors.any()) {
+      //     return (this.disabled = true);
+      //   } else {
+      //     return (this.disabled = false);
+      //   }
+      // },
+      // go() {
+      //   console.log("Number [" + this.number + "]");
+      //   ipcRenderer.send("go", this.number);
+      // }
+    }
+  };
 </script>
 
 <style>

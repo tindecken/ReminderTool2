@@ -1,6 +1,12 @@
 <template>
   <section class="section">
-    <button>Settings</button>
+    <b-field label="Email">
+      <b-input type="email"
+          value=""
+          :has-counter="false"
+          maxlength="30">
+      </b-input>
+    </b-field>
   </section>
 
 </template>
