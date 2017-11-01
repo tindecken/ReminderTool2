@@ -1,13 +1,45 @@
 <template>
-  <section class="section">
+  
+<section class="section">
+  <div class="container">
     <b-field label="Email">
       <b-input type="email"
           value=""
           :has-counter="false"
-          maxlength="30">
+          maxlength="30"
+          size="is-large">
       </b-input>
     </b-field>
+    <b-field label="Password">
+      <b-input type="password"
+          value=""
+          :has-counter="false"
+          maxlength="30"
+          size="is-large"
+          password-reveal>
+      </b-input>
+    </b-field>
+    <b-field label="Server">
+      <b-input
+          size="is-large">
+      </b-input>
+    </b-field>
+    <b-field label="Project">
+      <b-input
+          value=""
+          :has-counter="false"
+          maxlength="30"
+          size="is-large">
+      </b-input>
+    </b-field>
+    <div class="center">
+      <button class="button is-info is-large width">Connect</button>
+    </div>
+      </div>
   </section>
+  
+
+  
 
 </template>
 
@@ -49,7 +81,10 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
-.section{
-  padding: 0px;
+div.center{
+  text-align: center;
+}
+button.width{
+  width: 10em;
 }
 </style>

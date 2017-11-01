@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="l-application">
     <router-view></router-view>
   </div>
 </template>
@@ -15,4 +15,12 @@
 
 <style>
   /* CSS */
+  .l-application {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+}
 </style>
