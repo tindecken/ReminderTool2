@@ -1,7 +1,7 @@
 <template>
-  <section class="section">
+  <div id="logs">
     <button>Logs</button>
-  </section>
+  </div>
 
 </template>
 
@@ -36,14 +36,16 @@ export default {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
-body {
-  font-family: "Source Sans Pro", sans-serif;
-}
-::-webkit-scrollbar {
-  display: none;
-}
-.section{
-  padding: 0px;
-}
+  @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+  body {
+    font-family: "Source Sans Pro", sans-serif;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  #logs{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+  }
 </style>

@@ -1,7 +1,5 @@
 <template>
-  
-<section class="section">
-  <div class="container">
+  <div id="settings">
     <b-field label="Email">
       <b-input type="email"
           value=""
@@ -35,12 +33,7 @@
     <div class="center">
       <button class="button is-info is-large width">Connect</button>
     </div>
-      </div>
-  </section>
-  
-
-  
-
+  </div>
 </template>
 
 <script>
@@ -54,37 +47,30 @@ export default {
     };
   },
   methods: {
-    // open(link) {
-    //   this.$electron.shell.openExternal(link);
-    // },
-    // isDisabled() {
-    //   // evaluate whatever you need to determine disabled here...
-    //   if (this.errors.any()) {
-    //     return (this.disabled = true);
-    //   } else {
-    //     return (this.disabled = false);
-    //   }
-    // },
-    // go() {
-    //   console.log("Number [" + this.number + "]");
-    //   ipcRenderer.send("go", this.number);
-    // }
+    open(link) {
+      this.$electron.shell.openExternal(link);
+    },
   }
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
-body {
-  font-family: "Source Sans Pro", sans-serif;
-}
-::-webkit-scrollbar {
-  display: none;
-}
-div.center{
-  text-align: center;
-}
-button.width{
-  width: 10em;
-}
+  @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+  body {
+    font-family: "Source Sans Pro", sans-serif;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  div.center{
+    text-align: center;
+  }
+  button.width{
+    width: 10em;
+  }
+  #settings{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+  }
 </style>

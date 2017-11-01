@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <b-tabs type="is-toggle" expanded>
+      <b-tabs type="is-toggle" expanded>
         <b-tab-item label="Builds" icon="build">
           <builds></builds>
         </b-tab-item>
