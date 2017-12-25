@@ -33,42 +33,26 @@
       </b-input>
     </b-field>
     <div class="center">
-      <button class="button is-info is-large width">Connect</button>
+      <button class="button is-info is-large width" v-on:click='connect'>Connect</button>
     </div>
       </div>
   </section>
-  
-
-  
-
 </template>
 
 <script>
 const ipcRenderer = require("electron").ipcRenderer;
+import axios from 'axios'
 export default {
   name: "settings",
   data() {
     return {
-      // number: "",
-      // disabled: true
+      
     };
   },
   methods: {
-    // open(link) {
-    //   this.$electron.shell.openExternal(link);
-    // },
-    // isDisabled() {
-    //   // evaluate whatever you need to determine disabled here...
-    //   if (this.errors.any()) {
-    //     return (this.disabled = true);
-    //   } else {
-    //     return (this.disabled = false);
-    //   }
-    // },
-    // go() {
-    //   console.log("Number [" + this.number + "]");
-    //   ipcRenderer.send("go", this.number);
-    // }
+    connect: function(event){
+      ipcRenderer.send('vsts-oauth','getToken')
+    }
   }
 };
 </script>

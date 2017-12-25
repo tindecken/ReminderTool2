@@ -11,28 +11,12 @@ export default {
   name: "vue-builds",
   data() {
     return {
-      // number: "",
-      // disabled: true
     };
   },
   methods: {
-    // open(link) {
-    //   this.$electron.shell.openExternal(link);
-    // },
-    // isDisabled() {
-    //   // evaluate whatever you need to determine disabled here...
-    //   if (this.errors.any()) {
-    //     return (this.disabled = true);
-    //   } else {
-    //     return (this.disabled = false);
-    //   }
-    // },
-    // go() {
-    //   console.log("Number [" + this.number + "]");
-    //   ipcRenderer.send("go", this.number);
-    // }
+    
   }
-};
+}
 </script>
 
 <style>
