@@ -1,15 +1,15 @@
 <template>
   <section class="section">
-      <b-tabs type="is-toggle" expanded>
+    <b-tabs type="is-toggle" expanded @change="getBuilds">
         <b-tab-item label="Builds" icon="build">
           <builds></builds>
         </b-tab-item>
         <b-tab-item label="Logs" icon="history">
           <logs></logs>
         </b-tab-item>
-        <b-tab-item label="Settings" icon="settings">
+        <!-- <b-tab-item label="Settings" icon="settings">
           <settings></settings>
-        </b-tab-item>
+        </b-tab-item> -->
       </b-tabs>
   </section>
 
@@ -18,39 +18,33 @@
 <script>
   import Builds from '../components/Builds'
   import Logs from '../components/Logs'
-  import Settings from '../components/Settings'
+  // import Settings from '../components/Settings'
   const ipcRenderer = require("electron").ipcRenderer;
   export default {
     name: "home-page",
     components:{
         Builds,
-        Logs,
-        Settings
+        Logs
+        // Settings
       },
     data() {
       return {
-        // number: "",
-        // disabled: true
+
       };
     },
     methods: {
-      // open(link) {
-      //   this.$electron.shell.openExternal(link);
-      // },
-      // isDisabled() {
-      //   // evaluate whatever you need to determine disabled here...
-      //   if (this.errors.any()) {
-      //     return (this.disabled = true);
-      //   } else {
-      //     return (this.disabled = false);
-      //   }
-      // },
-      // go() {
-      //   console.log("Number [" + this.number + "]");
-      //   ipcRenderer.send("go", this.number);
-      // }
+      open(link) {
+        this.$electron.shell.openExternal(link);
+      },
+      getBuilds(value){
+        if(value === 0){ //Tab đầu tiên (Builds)
+          console.log('Bạn đã chọn Tab đầu tiên')
+          ipcRenderer.send('getBuilds')
+        }
+      }
     }
-  };
+  }
+  
 </script>
 
 <style>

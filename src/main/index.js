@@ -1,5 +1,18 @@
 import { app, BrowserWindow, ipcMain, Tray, Menu } from 'electron'
+import { create } from 'domain';
+import * as ba from 'vso-node-api/BuildApi'
+import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
+const collectionUrl = require('./config').collectionUrl
+const token = require('./config').token
+const project = require('./config').project
+let vsts = require('vso-node-api')
 
+let authHandler = vsts.getPersonalAccessTokenHandler(token)
+let connect = new vsts.WebApi(collectionUrl, authHandler)
+let vstsBuild = connect.getBuildApi();
+
+
+const electronOauth2 = require('electron-oauth2')
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -36,18 +49,10 @@ function createWindow () {
     mainWindow = null
   })
 
-  ipcMain.on('go', (event, number) => {
-    console.log('Number [' + number + "]")
-    mainWindow.hide()
-    tray = new Tray(__static + '/imgs/icon_normal.ico')
-    tray.setContextMenu(contextMenu)
-    tray.on('double-click', () => {
-      stopCounting(timer)
-      startCounting(number)
-    })
-    startCounting(number)
+  ipcMain.on('getBuilds', () => {
+    console.log('Refresh builds')
+    getBuilds()
   })
-
 }
 
 app.on('ready', createWindow)
@@ -64,24 +69,7 @@ app.on('activate', () => {
   }
 })
 
-function startCounting(number){
-  tray.setImage(__static + '/imgs/icon_normal.ico')
-  console.log('Start Counting [' + number + ']')
-  timer = setInterval(()=>{
-    number--
-    console.log("Number [" + number + "]")
-    tray.setToolTip(" " + number + "s left")
-    if(number === 0){
-      stopCounting(timer)
-    }
-  },1000)
-}
 
-function stopCounting(timer){
-  tray.setImage(__static + '/imgs/icon_alert.ico')
-  tray.setToolTip('Stopped')
-  clearInterval(timer)
-}
 
 /**
  * Auto Updater
@@ -102,3 +90,11 @@ app.on('ready', () => {
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
  */
+
+ async function getBuilds(){
+   let defs = await vstsBuild.getDefinitions(project)
+   defs.forEach((defRef) => {
+    // console.log(defRef.name + " (" + defRef.id + ')')
+    console.log(defRef.authoredBy.displayName)
+   })
+ }

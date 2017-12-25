@@ -31,25 +31,26 @@
       </b-input>
     </b-field>
     <div class="center">
-      <button class="button is-info is-large width">Connect</button>
+      <button class="button is-info is-large width" v-on:click='connect'>Connect</button>
     </div>
-  </div>
+      </div>
+  </section>
 </template>
 
 <script>
 const ipcRenderer = require("electron").ipcRenderer;
+import axios from 'axios'
 export default {
   name: "settings",
   data() {
     return {
-      // number: "",
-      // disabled: true
+      
     };
   },
   methods: {
-    open(link) {
-      this.$electron.shell.openExternal(link);
-    },
+    connect: function(event){
+      ipcRenderer.send('getBuilds')
+    }
   }
 };
 </script>
