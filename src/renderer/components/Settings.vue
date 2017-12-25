@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     connect: function(event){
-      ipcRenderer.send('vsts-oauth','getToken')
+      ipcRenderer.send('getBuilds')
     }
   }
 };

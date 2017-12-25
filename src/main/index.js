@@ -4,6 +4,7 @@ import * as ba from 'vso-node-api/BuildApi'
 import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
 const collectionUrl = require('./config').collectionUrl
 const token = require('./config').token
+const project = require('./config').project
 let vsts = require('vso-node-api')
 
 let authHandler = vsts.getPersonalAccessTokenHandler(token)
@@ -48,8 +49,9 @@ function createWindow () {
     mainWindow = null
   })
 
-  ipcMain.on('vsts-oauth', (event, arg) => {
-    run()
+  ipcMain.on('getBuilds', () => {
+    console.log('Refresh builds')
+    getBuilds()
   })
 }
 
@@ -89,10 +91,10 @@ app.on('ready', () => {
 })
  */
 
- async function run(){
-   let project = 'AutoTestManagement_Tool'
+ async function getBuilds(){
    let defs = await vstsBuild.getDefinitions(project)
    defs.forEach((defRef) => {
-    console.log(defRef.name + " (" + defRef.id + ')')
+    // console.log(defRef.name + " (" + defRef.id + ')')
+    console.log(defRef.authoredBy.displayName)
    })
  }

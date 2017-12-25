@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <b-tabs type="is-toggle" expanded @change="onChange">
+    <b-tabs type="is-toggle" expanded @change="getBuilds">
         <b-tab-item label="Builds" icon="build">
           <builds></builds>
         </b-tab-item>
@@ -36,9 +36,10 @@
       open(link) {
         this.$electron.shell.openExternal(link);
       },
-      onChange(value){
+      getBuilds(value){
         if(value === 0){ //Tab đầu tiên (Builds)
           console.log('Bạn đã chọn Tab đầu tiên')
+          ipcRenderer.send('getBuilds')
         }
       }
     }
