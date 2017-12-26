@@ -44,8 +44,7 @@ export default {
   name: "settings",
   data() {
     return {
-      
-    };
+    }
   },
   methods: {
     connect: function(event){
