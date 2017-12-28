@@ -2,7 +2,7 @@
   <section class="section">
     <b-tabs type="is-toggle" expanded @change="getBuilds">
         <b-tab-item label="Builds" icon="build">
-          <builds></builds> 
+          <builds :builds="buildDefs"></builds> 
           
         </b-tab-item>
         <b-tab-item label="Logs" icon="log">
@@ -21,6 +21,7 @@
   import Logs from '../components/Logs'
   import * as ba from 'vso-node-api/BuildApi'
   import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
+  import axios from 'axios'
   const collectionUrl = require('./config').collectionUrl
   const token = require('./config').token
   const project = require('./config').project
@@ -30,6 +31,11 @@
   let vstsBuild = connect.getBuildApi();
   // import Settings from '../components/Settings'
   const ipcRenderer = require("electron").ipcRenderer;
+
+  auth: {
+    username: ''
+    password: token
+  }
   export default {
     name: "home-page",
     components:{
@@ -48,16 +54,41 @@
       },
       getBuilds(value){
         if(value === 0){ //Tab đầu tiên (Builds)
-          console.log('Bạn đã chọn Tab đầu tiên')
-          getBuildDefs().then(v => {
-            this.buildDefs = v
-            console.log(this.buildDefs[0].id + " " + this.buildDefs[0].name)
+          console.log('Start - Getting build defs')
+          getBuildbyAxios(function(data){
+              console.log(data)
           })
+          // getBuildDefs().then(v => {
+          //   this.buildDefs = v
+          //   console.log('End - Getting build defs')
+          //   console.log(this.buildDefs[0].id + " " + this.buildDefs[0].name)
+          // }).catch(e => {
+          //   console.log(e)
+          // })
+        }
       }
+      
+    },
+    created: function(){
+      console.log('Created function')
+      this.getBuilds(0)
     }
   }
- }
+ 
+function getBuildbyAxios(cb, err){
+  axios.get('https://acomsolutions.visualstudio.com/DefaultCollection/AutoTestManagement_Tool/_apis/build/definitions?api-version=2.0', {
+    username: '',
+    password: 'kohmv673xit7i2hgxgq7a6e6qadglkjmf2gw2kgdeqp47rw5c6qa'
+  })
+    .then(v => {
+      cb(v)
+      console.log(this.buildDefs)
+    })
+}
 
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
  async function getBuildDefs(){
   return await vstsBuild.getDefinitions(project)
   //  let defs = await vstsBuild.getDefinitions(project)

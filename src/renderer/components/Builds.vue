@@ -1,24 +1,14 @@
 <template>
   <div id="builds">
       <b-table
-        :data="tableDataSimple"
-        :selected.sync="selected"
+        :data="builds"
         focusable>
         <template slot-scope="props">
             <b-table-column label="ID" width="40" numeric>
                 {{ props.row.id }}
             </b-table-column>
-            <b-table-column label="First Name">
-                {{ props.row.first_name }}
-            </b-table-column>
-            <b-table-column label="Last Name">
-                {{ props.row.last_name }}
-            </b-table-column>
-            <b-table-column label="Date" centered>
-                {{ new Date(props.row.date).toLocaleDateString() }}
-            </b-table-column>
-            <b-table-column label="Gender">
-                {{ props.row.gender }}
+            <b-table-column label="Build Name">
+                {{ props.row.name }}
             </b-table-column>
         </template>
       </b-table>
@@ -29,6 +19,7 @@
 const ipcRenderer = require("electron").ipcRenderer;
 export default {
   name: "vue-builds",
+  props: ['builds'],
   data: function() {
       const tableDataSimple = [
                 { 'id': 1, 'first_name': 'Jesse', 'last_name': 'Simmons', 'date': '2016-10-15 13:43:27', 'gender': 'Male' },
@@ -38,8 +29,7 @@ export default {
                 { 'id': 5, 'first_name': 'Anne', 'last_name': 'Lee', 'date': '2016-12-06 14:38:38', 'gender': 'Female' }
             ]
     return {
-      tableDataSimple,
-      selected: tableDataSimple[0]
+      tableDataSimple
     }  
   },
   computed: {
@@ -47,6 +37,9 @@ export default {
   },
   methods: {
     
+  },
+  created: function(){
+    console.log('Build Created function')
   }
 };
 </script>
