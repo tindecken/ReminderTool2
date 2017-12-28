@@ -32,10 +32,15 @@
   // import Settings from '../components/Settings'
   const ipcRenderer = require("electron").ipcRenderer;
 
-  auth: {
-    username: ''
-    password: token
-  }
+  var instanceAxios = axios.create({
+    // baseURL: 'https://some-domain.com/api/',
+    timeout: 2000,
+    headers: {'Accept': 'applicaton/json'},
+    auth: {
+      username: '',
+      password: 'kohmv673xit7i2hgxgq7a6e6qadglkjmf2gw2kgdeqp47rw5c6qa'
+    },
+  });
   export default {
     name: "home-page",
     components:{
@@ -56,7 +61,7 @@
         if(value === 0){ //Tab đầu tiên (Builds)
           console.log('Start - Getting build defs')
           getBuildbyAxios(function(data){
-              console.log(data)
+              console.log(data.value[0])
           })
           // getBuildDefs().then(v => {
           //   this.buildDefs = v
@@ -67,22 +72,26 @@
           // })
         }
       }
-      
     },
     created: function(){
-      console.log('Created function')
-      this.getBuilds(0)
+      getBuildbyAxios(function(data){
+        console.log(data.value[0])
+      })
     }
   }
  
-function getBuildbyAxios(cb, err){
-  axios.get('https://acomsolutions.visualstudio.com/DefaultCollection/AutoTestManagement_Tool/_apis/build/definitions?api-version=2.0', {
+function getBuildbyAxios(cb){
+  axios({
+  method:'get',
+  url:'https://acomsolutions.visualstudio.com/DefaultCollection/AutoTestManagement_Tool/_apis/build/definitions?api-version=2.0',
+  auth: {
     username: '',
     password: 'kohmv673xit7i2hgxgq7a6e6qadglkjmf2gw2kgdeqp47rw5c6qa'
-  })
-    .then(v => {
-      cb(v)
-      console.log(this.buildDefs)
+  }
+}).then(v => {
+      cb(v.data)
+    }).catch(e => {
+      console.log(e)
     })
 }
 
