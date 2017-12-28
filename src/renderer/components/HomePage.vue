@@ -2,9 +2,10 @@
   <section class="section">
     <b-tabs type="is-toggle" expanded @change="getBuilds">
         <b-tab-item label="Builds" icon="build">
-          <builds></builds>
+          <builds></builds> 
+          
         </b-tab-item>
-        <b-tab-item label="Logs" icon="history">
+        <b-tab-item label="Logs" icon="log">
           <logs></logs>
         </b-tab-item>
         <!-- <b-tab-item label="Settings" icon="settings">
