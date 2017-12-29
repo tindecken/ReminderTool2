@@ -47,9 +47,6 @@ export default {
     }
   },
   methods: {
-    connect: function(event){
-      ipcRenderer.send('getBuilds')
-    }
   }
 };
 </script>
@@ -59,9 +56,9 @@ export default {
   body {
     font-family: "Source Sans Pro", sans-serif;
   }
-  ::-webkit-scrollbar {
+  /* ::-webkit-scrollbar {
     display: none;
-  }
+  } */
   div.center{
     text-align: center;
   }

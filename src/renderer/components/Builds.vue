@@ -5,7 +5,7 @@
         :hoverable="true"
         :striped="true"
         :bordered="true"
-        :loading="isLoading">
+        :loading="$store.state.isLoading">
         <template slot-scope="props">
             <b-table-column label="ID" width="40" numeric>
                 {{ props.row.id }}
@@ -19,8 +19,10 @@
 </template>
 
 <script>
+import Store from '../store/index'
 const ipcRenderer = require("electron").ipcRenderer;
 export default {
+  store: Store,
   name: "vue-builds",
   props: ['builds', 'isLoading'],
   data: function() {
@@ -37,6 +39,7 @@ export default {
   },
   created: function(){
     console.log('Build Created function')
+    console.log('Store [' + this.$store.state.isLoading + ']')
   }
 };
 </script>
@@ -46,9 +49,9 @@ export default {
 body {
   font-family: "Source Sans Pro", sans-serif;
 }
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 #builds {
   padding-left: 10px;
   padding-right: 10px;

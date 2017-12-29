@@ -40,9 +40,9 @@ export default {
   body {
     font-family: "Source Sans Pro", sans-serif;
   }
-  ::-webkit-scrollbar {
+  /* ::-webkit-scrollbar {
     display: none;
-  }
+  } */
   #logs{
     padding-left: 10px;
     padding-right: 10px;

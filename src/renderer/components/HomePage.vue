@@ -18,30 +18,18 @@
 <script>
   import Builds from '../components/Builds'
   import Logs from '../components/Logs'
-  import * as ba from 'vso-node-api/BuildApi'
-  import * as bi from 'vso-node-api/interfaces/BuildInterfaces';
   import axios from 'axios'
+  import Store from '../store/index'
   const collectionUrl = require('./config').collectionUrl
   const token = require('./config').token
   const project = require('./config').project
-  let vsts = require('vso-node-api')
-  let authHandler = vsts.getPersonalAccessTokenHandler(token)
-  let connect = new vsts.WebApi(collectionUrl, authHandler)
-  let vstsBuild = connect.getBuildApi();
+  const auth = require('./config').auth
+
   // import Settings from '../components/Settings'
   const ipcRenderer = require("electron").ipcRenderer;
-
-  var instanceAxios = axios.create({
-    // baseURL: 'https://some-domain.com/api/',
-    timeout: 2000,
-    headers: {'Accept': 'applicaton/json'},
-    auth: {
-      username: '',
-      password: 'kohmv673xit7i2hgxgq7a6e6qadglkjmf2gw2kgdeqp47rw5c6qa'
-    },
-  });
   export default {
     name: "home-page",
+    store: Store,
     components:{
         Builds,
         Logs
@@ -61,13 +49,10 @@
         if(value === 0){ //Tab đầu tiên (Builds)
           console.log('Start - Getting build defs')
           var thiz = this
-          this.isLoading = true
+          this.$store.commit('setIsloadingTrue', this.$store.state)
           getBuildbyAxios(function(data){
             thiz.buildDefs = data.value
-            thiz.isLoading = false
-            console.log('Start -- Du lieu tra ve')
-            console.log(thiz.buildDefs)
-            console.log('End -- Du lieu tra ve')
+            thiz.$store.commit('setIsloadingFalse', thiz.$store.state)
           })
           console.log('End - Getting build defs')
         }
@@ -75,10 +60,10 @@
     },
     created: function(){
       var thiz = this
-      this.isLoading = true
+      this.$store.commit('setIsloadingTrue', this.$store.state);
       getBuildbyAxios(function(data){
         thiz.buildDefs = data.value
-        thiz.isLoading = false
+        thiz.$store.commit('setIsloadingFalse', thiz.$store.state)
       })
     }
   }
@@ -86,11 +71,8 @@
 function getBuildbyAxios(cb){
   axios({
     method:'get',
-    url:'https://acomsolutions.visualstudio.com/DefaultCollection/AutoTestManagement_Tool/_apis/build/definitions?api-version=2.0',
-    auth: {
-      username: '',
-      password: 'kohmv673xit7i2hgxgq7a6e6qadglkjmf2gw2kgdeqp47rw5c6qa'
-    }
+    url:`${collectionUrl}/${project}/_apis/build/definitions?api-version=2.00`,
+    auth
   }).then(function(response){
     cb(response.data) // Phải trả về hàm, để khi sử dụng, tham số truyền vào là 1 hàm, không được: cb = response
   }).catch(function(error){
@@ -116,9 +98,9 @@ function timeout(ms) {
 body {
   font-family: "Source Sans Pro", sans-serif;
 }
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 .section{
   padding: 0px;
 }
