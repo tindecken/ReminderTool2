@@ -2,8 +2,7 @@
   <section class="section">
     <b-tabs type="is-toggle" expanded @change="getBuilds">
         <b-tab-item label="Builds" icon="build">
-          <builds :builds="buildDefs"></builds> 
-          
+          <builds :builds="buildDefs" :isLoading="isLoading"></builds> 
         </b-tab-item>
         <b-tab-item label="Logs" icon="log">
           <logs></logs>
@@ -51,6 +50,7 @@
     data: function() {
       return {
         buildDefs: [],
+        isLoading: true
       };
     },
     methods: {
@@ -60,45 +60,49 @@
       getBuilds(value){
         if(value === 0){ //Tab đầu tiên (Builds)
           console.log('Start - Getting build defs')
+          var thiz = this
+          this.isLoading = true
           getBuildbyAxios(function(data){
-              console.log(data.value[0])
+            thiz.buildDefs = data.value
+            thiz.isLoading = false
+            console.log('Start -- Du lieu tra ve')
+            console.log(thiz.buildDefs)
+            console.log('End -- Du lieu tra ve')
           })
-          // getBuildDefs().then(v => {
-          //   this.buildDefs = v
-          //   console.log('End - Getting build defs')
-          //   console.log(this.buildDefs[0].id + " " + this.buildDefs[0].name)
-          // }).catch(e => {
-          //   console.log(e)
-          // })
+          console.log('End - Getting build defs')
         }
       }
     },
     created: function(){
+      var thiz = this
+      this.isLoading = true
       getBuildbyAxios(function(data){
-        console.log(data.value[0])
+        thiz.buildDefs = data.value
+        thiz.isLoading = false
       })
     }
   }
  
 function getBuildbyAxios(cb){
   axios({
-  method:'get',
-  url:'https://acomsolutions.visualstudio.com/DefaultCollection/AutoTestManagement_Tool/_apis/build/definitions?api-version=2.0',
-  auth: {
-    username: '',
-    password: 'kohmv673xit7i2hgxgq7a6e6qadglkjmf2gw2kgdeqp47rw5c6qa'
-  }
-}).then(v => {
-      cb(v.data)
-    }).catch(e => {
-      console.log(e)
-    })
+    method:'get',
+    url:'https://acomsolutions.visualstudio.com/DefaultCollection/AutoTestManagement_Tool/_apis/build/definitions?api-version=2.0',
+    auth: {
+      username: '',
+      password: 'kohmv673xit7i2hgxgq7a6e6qadglkjmf2gw2kgdeqp47rw5c6qa'
+    }
+  }).then(function(response){
+    cb(response.data) // Phải trả về hàm, để khi sử dụng, tham số truyền vào là 1 hàm, không được: cb = response
+  }).catch(function(error){
+    console.log(error)
+  })
 }
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
  async function getBuildDefs(){
+  
   return await vstsBuild.getDefinitions(project)
   //  let defs = await vstsBuild.getDefinitions(project)
   //  defs.forEach((defRef) => {
