@@ -50,33 +50,48 @@
           console.log('Start - Getting build defs')
           var thiz = this
           this.$store.commit('setIsloadingTrue', this.$store.state)
-          getBuildbyAxios(function(data){
+          getAllBuildDefs(function(data){
             thiz.buildDefs = data.value
+            thiz.buildDefs.forEach(element => {
+              getLastBuildByBuildDefId(element.id, function(dataReturn){
+                console.log('Build Def ID ' + element.id)
+                console.log(dataReturn)
+              })
+            });
             thiz.$store.commit('setIsloadingFalse', thiz.$store.state)
           })
           console.log('End - Getting build defs')
+
         }
       }
     },
     created: function(){
       var thiz = this
       this.$store.commit('setIsloadingTrue', this.$store.state);
-      getBuildbyAxios(function(data){
+      getAllBuildDefs(function(data){
         thiz.buildDefs = data.value
         thiz.$store.commit('setIsloadingFalse', thiz.$store.state)
       })
     }
   }
  
-function getBuildbyAxios(cb){
+function getAllBuildDefs(callback){
   axios({
     method:'get',
     url:`${collectionUrl}/${project}/_apis/build/definitions?api-version=2.00`,
     auth
   }).then(function(response){
-    cb(response.data) // Phải trả về hàm, để khi sử dụng, tham số truyền vào là 1 hàm, không được: cb = response
-  }).catch(function(error){
-    console.log(error)
+    callback(response.data) // Phải trả về hàm, để khi sử dụng, tham số truyền vào là 1 hàm, không được: cb = response
+  })
+}
+
+function getLastBuildByBuildDefId(buildDefId, callback){
+  axios({
+    method:'get',
+    url:`${collectionUrl}/${project}/_apis/build/builds?api-version=2.00&definitions=${buildDefId}&$top=1`,
+    auth
+  }).then(function(response){
+    callback(response.data)
   })
 }
 
