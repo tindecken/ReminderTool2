@@ -1,7 +1,7 @@
 <template>
-  <div id="builds">
-      <b-table
-        :data="builds"
+  <div id="releases">
+    <b-table
+        :data="releases"
         :hoverable="true"
         :striped="true"
         :bordered="true"
@@ -20,6 +20,7 @@
         </template>
       </b-table>
   </div>
+
 </template>
 
 <script>
@@ -27,36 +28,31 @@ import Store from '../store/index'
 const ipcRenderer = require("electron").ipcRenderer;
 export default {
   store: Store,
-  name: "builds",
-  props: ['builds', 'isLoading'],
-  data: function() {
+  name: "releases",
+  props: ['releases', 'isLoadingRelease'],
+  data() {
     return {
-    }  
-  },
-  computed: {
-    
+    };
   },
   methods: {
     open(link) {
       this.$electron.shell.openExternal(link);
     },
-  },
-  created: function(){
   }
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
-body {
-  font-family: "Source Sans Pro", sans-serif;
-}
-/* ::-webkit-scrollbar {
-  display: none;
-} */
-#builds {
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 5px;
-}
+  @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+  body {
+    font-family: "Source Sans Pro", sans-serif;
+  }
+  /* ::-webkit-scrollbar {
+    display: none;
+  } */
+  #releases{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+  }
 </style>

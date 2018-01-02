@@ -6,7 +6,8 @@ import modules from './modules'
 Vue.use(Vuex)
 
 const state = {
-  isLoading: true
+  isLoading: true,
+  isLoadingRelease: true,
 }
 
 const mutations = {
@@ -15,6 +16,12 @@ const mutations = {
   },
   setIsloadingFalse(state) {
     state.isLoading = false
+  },
+  setIsloadingReleaseTrue(state) {
+    state.isLoadingRelease = true
+  },
+  setIsloadingReleaseFalse(state) {
+    state.isLoadingRelease = false
   }
 }
 
