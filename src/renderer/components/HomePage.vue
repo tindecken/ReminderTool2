@@ -5,7 +5,7 @@
           <builds :builds="buildDefs" :isLoading="isLoading"></builds> 
         </b-tab-item>
         <b-tab-item label="Releases" icon="releases">
-          <releases :releases="releasesDefs" :isLoadingRelease="isLoadingRelease"></releases>
+          <releases :releases="releasesDefs " :isLoadingRelease="isLoadingRelease"></releases>
         </b-tab-item>
       </b-tabs>
   </section>
@@ -76,26 +76,63 @@
           console.log('Start - Getting release defs')
           var thiz = this
           this.$store.commit('setIsloadingReleaseTrue', this.$store.state)
-          getAllReleaseDefs(function(data){
+          getAllReleaseDefs(function(data){ //Get all Release Definitions
             var releaseDefsTemp = data.value
-            console.log(data.value)
+            console.log(releaseDefsTemp)
             for(let i = 0; i < releaseDefsTemp.length; i++){
-                releaseDefsTemp[i].lastStatus = ""
-                releaseDefsTemp[i].lastResult = ""
+                releaseDefsTemp[i].lastNameEnvironment1 = ""
+                releaseDefsTemp[i].lastNameEnvironment2 = ""
+                releaseDefsTemp[i].lastNameEnvironment3 = ""
+                releaseDefsTemp[i].lastNameEnvironment4 = ""
+                releaseDefsTemp[i].lastStatusEnvironment1 = ""
+                releaseDefsTemp[i].lastStatusEnvironment2 = ""
+                releaseDefsTemp[i].lastStatusEnvironment3 = ""
+                releaseDefsTemp[i].lastStatusEnvironment4 = ""
+                releaseDefsTemp[i].lastReleaseName = ""
                 releaseDefsTemp[i].lastBuildLink = ""
-                getLastReleaseByReleaseDefId(releaseDefsTemp[i].id, function(dataReturn){
+                getLastReleaseByReleaseDefId(releaseDefsTemp[i].id, function(dataReturn){  //Get last release of one release definition
                   if(dataReturn.value[0] != null){
-                    releaseDefsTemp[i].lastStatus = dataReturn.value[0].status
-                    releaseDefsTemp[i].lastResult = dataReturn.value[0].result
-                    releaseDefsTemp[i].lastBuildLink = dataReturn.value[0]._links.web.href
-                    // console.log(dataReturn.value[0]._links.web.href)
-                    // console.log('Build Def ID ' + releaseDefsTemp[i].id)
-                    // console.log('Status: ' + releaseDefsTemp[i].lastStatus)
-                    // console.log('Result: ' + releaseDefsTemp[i].lastResult)
+                    releaseDefsTemp[i].lastReleaseName = dataReturn.value[0].name
+                    console.log('Last release ID of Release Definition is: ' + releaseDefsTemp[i].id + ' - ' + dataReturn.value[0].id)
+                    getDetailOfRelease(dataReturn.value[0].id, function(releaseDetail){
+                      if(releaseDetail.environments.length == 1){
+                        console.log('First Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[0].status)
+                        releaseDefsTemp[i].lastNameEnvironment1 = releaseDetail.environments[0].name
+                        releaseDefsTemp[i].lastStatusEnvironment1 = releaseDetail.environments[0].status
+                      }else if(releaseDetail.environments.length == 2){
+                        console.log('First Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[0].status)
+                        console.log('Second Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[1].status)
+                        releaseDefsTemp[i].lastNameEnvironment1 = releaseDetail.environments[0].name
+                        releaseDefsTemp[i].lastStatusEnvironment1 = releaseDetail.environments[0].status
+                        releaseDefsTemp[i].lastNameEnvironment2 = releaseDetail.environments[1].name
+                        releaseDefsTemp[i].lastStatusEnvironment2 = releaseDetail.environments[1].status
+                      }else if(releaseDetail.environments.length == 3){
+                        console.log('First Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[0].status)
+                        console.log('Second Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[1].status)
+                        releaseDefsTemp[i].lastNameEnvironment1 = releaseDetail.environments[0].name
+                        releaseDefsTemp[i].lastStatusEnvironment1 = releaseDetail.environments[0].status
+                        releaseDefsTemp[i].lastNameEnvironment2 = releaseDetail.environments[1].name
+                        releaseDefsTemp[i].lastStatusEnvironment2 = releaseDetail.environments[1].status
+                        releaseDefsTemp[i].lastNameEnvironment3 = releaseDetail.environments[2].name
+                        releaseDefsTemp[i].lastStatusEnvironment3 = releaseDetail.environments[2].status
+                      }else if(releaseDetail.environments.length == 4){
+                        console.log('First Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[0].status)
+                        console.log('Second Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[1].status)
+                        releaseDefsTemp[i].lastNameEnvironment1 = releaseDetail.environments[0].name
+                        releaseDefsTemp[i].lastStatusEnvironment1 = releaseDetail.environments[0].status
+                        releaseDefsTemp[i].lastNameEnvironment2 = releaseDetail.environments[1].name
+                        releaseDefsTemp[i].lastStatusEnvironment2 = releaseDetail.environments[1].status
+                        releaseDefsTemp[i].lastNameEnvironment3 = releaseDetail.environments[2].name
+                        releaseDefsTemp[i].lastStatusEnvironment3 = releaseDetail.environments[2].status
+                        releaseDefsTemp[i].lastNameEnvironment4 = releaseDetail.environments[3].name
+                        releaseDefsTemp[i].lastStatusEnvironment4 = releaseDetail.environments[3].status
+                      }
+                    })
                   }
               })
             }
-            thiz.releaseDefs = releaseDefsTemp
+            thiz.releasesDefs = releaseDefsTemp
+            console.log(thiz.releasesDefs)
             thiz.$store.commit('setIsloadingReleaseFalse', thiz.$store.state)
           })
           console.log('End - Getting relase defs')
@@ -142,6 +179,16 @@ function getLastReleaseByReleaseDefId(releaseDefId, callback){
   axios({
     method:'get',
     url:`https://acomsolutions.vsrm.visualstudio.com/DefaultCollection/${project}/_apis/release/releases?definitionId=${releaseDefId}&api-version=4.0-preview.3&$top=1`,
+    auth
+  }).then(function(response){
+    callback(response.data)
+  })
+}
+
+function getDetailOfRelease(releaseId, callback){
+  axios({
+    method:'get',
+    url:`https://acomsolutions.vsrm.visualstudio.com/DefaultCollection/${project}/_apis/release/releases/${releaseId}?api-version=4.0-preview.3`,
     auth
   }).then(function(response){
     callback(response.data)

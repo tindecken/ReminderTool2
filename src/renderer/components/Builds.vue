@@ -1,24 +1,24 @@
 <template>
   <div id="builds">
-      <b-table
-        :data="builds"
-        :hoverable="true"
-        :striped="true"
-        :bordered="true"
-        :loading="$store.state.isLoading">
-        <template slot-scope="props">
-            <b-table-column label="ID" width="40" numeric>
-                {{ props.row.id }}
-            </b-table-column>
-            <b-table-column label="Build Definition">
-                <a v-on:click.stop.prevent="open(props.row._links.web.href)">{{ props.row.name }}</a>
-            </b-table-column>
-            <b-table-column label="Last Result">
-                <a v-if="props.row.lastResult" v-on:click.stop.prevent="open(props.row.lastBuildLink)">{{ props.row.lastResult }}</a>
-                <a v-else v-on:click.stop.prevent="open(props.row.lastBuildLink)">{{ props.row.lastStatus }}</a>
-            </b-table-column>
-        </template>
-      </b-table>
+    <b-table
+      :data="builds"
+      :hoverable="true"
+      :striped="true"
+      :bordered="true"
+      :loading="$store.state.isLoading">
+      <template slot-scope="props">
+          <b-table-column label="ID" width="40" numeric>
+              {{ props.row.id }}
+          </b-table-column>
+          <b-table-column label="Build Definition">
+              <a v-on:click.stop.prevent="open(props.row._links.web.href)">{{ props.row.name }}</a>
+          </b-table-column>
+          <b-table-column label="Last Result">
+              <a v-if="props.row.lastResult" v-on:click.stop.prevent="open(props.row.lastBuildLink)">{{ props.row.lastResult }}</a>
+              <a v-else v-on:click.stop.prevent="open(props.row.lastBuildLink)">{{ props.row.lastStatus }}</a>
+          </b-table-column>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -33,15 +33,10 @@ export default {
     return {
     }  
   },
-  computed: {
-    
-  },
   methods: {
     open(link) {
       this.$electron.shell.openExternal(link);
     },
-  },
-  created: function(){
   }
 };
 </script>
