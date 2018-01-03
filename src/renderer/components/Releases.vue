@@ -6,7 +6,6 @@
       :striped="true"
       :bordered="true"
       :loading="$store.state.isLoadingRelease"
-      :row-class="(row, index) => row.lastStatusEnvironment1 === 'rejected' ? 'is-rejected' : ''"
       >
       <template slot-scope="props">
           <b-table-column label="ID" width="40" numeric>
@@ -19,6 +18,10 @@
             <a v-on:click.stop.prevent="open(props.row.lastReleaseUrl)">{{ props.row.lastReleaseName }}</a>
           </b-table-column>
           <b-table-column label="Environment 1">
+            <b-icon v-if="isRejected"
+                icon="account"
+                size="is-small">
+            </b-icon>
             {{ props.row.lastNameEnvironment1 }}  {{ props.row.lastStatusEnvironment1 }}
           </b-table-column>
           <b-table-column label="Environment 2">
@@ -51,9 +54,17 @@ export default {
       this.$electron.shell.openExternal(link);
     },
   },
-  watch: {
-
-  }
+  computed: {
+      if(this.releases[0].lastStatusEnvironment1 == 'rejected'){
+    
+    isRejected: function(){
+      if(this.releases[0].lastStatusEnvironment1 == 'rejected'){
+        return true
+      }else{
+        return false
+      }
+    }
+  },
 };
 </script>
 

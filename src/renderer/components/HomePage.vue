@@ -1,10 +1,10 @@
 <template>
   <section class="section">
     <b-tabs type="is-toggle" expanded @change="getBuilds" size="is-medium">
-        <b-tab-item icon="account"  label="Builds" >
+        <b-tab-item icon="arrow-left-bold" label="Builds" >
           <builds :builds="buildDefs" :isLoading="isLoading"></builds> 
         </b-tab-item>
-        <b-tab-item  icon="account" label="Releases">
+        <b-tab-item  icon="arrow-right-bold" label="Releases">
           <releases :releases="releasesDefs " :isLoadingRelease="isLoadingRelease"></releases>
         </b-tab-item>
       </b-tabs>
@@ -99,6 +99,7 @@
               })
             }
             thiz.releasesDefs = releaseDefsTemp
+            console.log(thiz.releasesDefs)
             thiz.$store.commit('setIsloadingReleaseFalse', thiz.$store.state)
           })
           console.log('End - Getting relase defs')
