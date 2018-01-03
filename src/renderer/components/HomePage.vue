@@ -1,10 +1,10 @@
 <template>
   <section class="section">
-    <b-tabs type="is-toggle" expanded @change="getBuilds">
-        <b-tab-item label="Builds" icon="build">
+    <b-tabs type="is-toggle" expanded @change="getBuilds" size="is-medium">
+        <b-tab-item icon="account"  label="Builds" >
           <builds :builds="buildDefs" :isLoading="isLoading"></builds> 
         </b-tab-item>
-        <b-tab-item label="Releases" icon="releases">
+        <b-tab-item  icon="account" label="Releases">
           <releases :releases="releasesDefs " :isLoadingRelease="isLoadingRelease"></releases>
         </b-tab-item>
       </b-tabs>
@@ -46,7 +46,7 @@
         this.$electron.shell.openExternal(link);
       },
       getBuilds(value){
-        if(value === 0){ //Tab đầu tiên (Builds)
+        if(value === 0){ //Tab Builds
           console.log('Start - Getting build defs')
           var thiz = this
           this.$store.commit('setIsloadingTrue', this.$store.state)
@@ -61,10 +61,6 @@
                     buildDefsTemp[i].lastStatus = dataReturn.value[0].status
                     buildDefsTemp[i].lastResult = dataReturn.value[0].result
                     buildDefsTemp[i].lastBuildLink = dataReturn.value[0]._links.web.href
-                    // console.log(dataReturn.value[0]._links.web.href)
-                    // console.log('Build Def ID ' + buildDefsTemp[i].id)
-                    // console.log('Status: ' + buildDefsTemp[i].lastStatus)
-                    // console.log('Result: ' + buildDefsTemp[i].lastResult)
                   }
               })
             }
@@ -78,7 +74,6 @@
           this.$store.commit('setIsloadingReleaseTrue', this.$store.state)
           getAllReleaseDefs(function(data){ //Get all Release Definitions
             var releaseDefsTemp = data.value
-            console.log(releaseDefsTemp)
             for(let i = 0; i < releaseDefsTemp.length; i++){
                 releaseDefsTemp[i].lastNameEnvironment1 = ""
                 releaseDefsTemp[i].lastNameEnvironment2 = ""
@@ -93,46 +88,17 @@
                 getLastReleaseByReleaseDefId(releaseDefsTemp[i].id, function(dataReturn){  //Get last release of one release definition
                   if(dataReturn.value[0] != null){
                     releaseDefsTemp[i].lastReleaseName = dataReturn.value[0].name
-                    console.log('Last release ID of Release Definition is: ' + releaseDefsTemp[i].id + ' - ' + dataReturn.value[0].id)
+                    releaseDefsTemp[i].lastReleaseUrl = dataReturn.value[0]._links.web.href
                     getDetailOfRelease(dataReturn.value[0].id, function(releaseDetail){
-                      if(releaseDetail.environments.length == 1){
-                        console.log('First Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[0].status)
-                        releaseDefsTemp[i].lastNameEnvironment1 = releaseDetail.environments[0].name
-                        releaseDefsTemp[i].lastStatusEnvironment1 = releaseDetail.environments[0].status
-                      }else if(releaseDetail.environments.length == 2){
-                        console.log('First Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[0].status)
-                        console.log('Second Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[1].status)
-                        releaseDefsTemp[i].lastNameEnvironment1 = releaseDetail.environments[0].name
-                        releaseDefsTemp[i].lastStatusEnvironment1 = releaseDetail.environments[0].status
-                        releaseDefsTemp[i].lastNameEnvironment2 = releaseDetail.environments[1].name
-                        releaseDefsTemp[i].lastStatusEnvironment2 = releaseDetail.environments[1].status
-                      }else if(releaseDetail.environments.length == 3){
-                        console.log('First Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[0].status)
-                        console.log('Second Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[1].status)
-                        releaseDefsTemp[i].lastNameEnvironment1 = releaseDetail.environments[0].name
-                        releaseDefsTemp[i].lastStatusEnvironment1 = releaseDetail.environments[0].status
-                        releaseDefsTemp[i].lastNameEnvironment2 = releaseDetail.environments[1].name
-                        releaseDefsTemp[i].lastStatusEnvironment2 = releaseDetail.environments[1].status
-                        releaseDefsTemp[i].lastNameEnvironment3 = releaseDetail.environments[2].name
-                        releaseDefsTemp[i].lastStatusEnvironment3 = releaseDetail.environments[2].status
-                      }else if(releaseDetail.environments.length == 4){
-                        console.log('First Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[0].status)
-                        console.log('Second Environment status of release id : ' + dataReturn.value[0].id + ' is ' + releaseDetail.environments[1].status)
-                        releaseDefsTemp[i].lastNameEnvironment1 = releaseDetail.environments[0].name
-                        releaseDefsTemp[i].lastStatusEnvironment1 = releaseDetail.environments[0].status
-                        releaseDefsTemp[i].lastNameEnvironment2 = releaseDetail.environments[1].name
-                        releaseDefsTemp[i].lastStatusEnvironment2 = releaseDetail.environments[1].status
-                        releaseDefsTemp[i].lastNameEnvironment3 = releaseDetail.environments[2].name
-                        releaseDefsTemp[i].lastStatusEnvironment3 = releaseDetail.environments[2].status
-                        releaseDefsTemp[i].lastNameEnvironment4 = releaseDetail.environments[3].name
-                        releaseDefsTemp[i].lastStatusEnvironment4 = releaseDetail.environments[3].status
+                      for (var k = 0; k < releaseDetail.environments.length; k++) {
+                        releaseDefsTemp[i]['lastNameEnvironment' + (k +1)] = releaseDetail.environments[k].name
+                        releaseDefsTemp[i]['lastStatusEnvironment' + (k +1)] = releaseDetail.environments[k].status
                       }
                     })
                   }
               })
             }
             thiz.releasesDefs = releaseDefsTemp
-            console.log(thiz.releasesDefs)
             thiz.$store.commit('setIsloadingReleaseFalse', thiz.$store.state)
           })
           console.log('End - Getting relase defs')
@@ -141,7 +107,6 @@
     },
     created: function(){
       this.getBuilds(0)
-      this.getBuilds(1)
     }
   }
  
@@ -202,13 +167,6 @@ function timeout(ms) {
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
-body {
-  font-family: "Source Sans Pro", sans-serif;
-}
-/* ::-webkit-scrollbar {
-  display: none;
-} */
 .section{
   padding: 0px;
 }

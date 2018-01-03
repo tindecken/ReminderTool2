@@ -12,7 +12,9 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false
 Vue.use(VeeValidate)
-Vue.use(Buefy)
+Vue.use(Buefy,{
+  defaultIconPack: 'mdi'
+})
 
 /* eslint-disable no-new */
 new Vue({
@@ -22,5 +24,4 @@ new Vue({
   template: '<App/>',
   VeeValidate,
   Buefy
-  
 }).$mount('#app')

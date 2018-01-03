@@ -5,7 +5,9 @@
       :hoverable="true"
       :striped="true"
       :bordered="true"
-      :loading="$store.state.isLoadingRelease">
+      :loading="$store.state.isLoadingRelease"
+      :row-class="(row, index) => row.lastStatusEnvironment1 === 'rejected' ? 'is-rejected' : ''"
+      >
       <template slot-scope="props">
           <b-table-column label="ID" width="40" numeric>
               {{ props.row.id }}
@@ -14,7 +16,7 @@
               <a v-on:click.stop.prevent="open(props.row._links.web.href)">{{ props.row.name }}</a>
           </b-table-column>
           <b-table-column label="Last Release Name">
-            {{ props.row.lastReleaseName }}
+            <a v-on:click.stop.prevent="open(props.row.lastReleaseUrl)">{{ props.row.lastReleaseName }}</a>
           </b-table-column>
           <b-table-column label="Environment 1">
             {{ props.row.lastNameEnvironment1 }}  {{ props.row.lastStatusEnvironment1 }}
@@ -48,21 +50,20 @@ export default {
     open(link) {
       this.$electron.shell.openExternal(link);
     },
+  },
+  watch: {
+
   }
 };
 </script>
 
 <style>
-  @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
-  body {
-    font-family: "Source Sans Pro", sans-serif;
-  }
-  /* ::-webkit-scrollbar {
-    display: none;
-  } */
   #releases{
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 5px;
+  }
+  tr.is-rejected {
+      background: rgb(238,69,31) !important;
   }
 </style>

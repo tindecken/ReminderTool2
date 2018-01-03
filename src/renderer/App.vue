@@ -1,11 +1,12 @@
 <template>
   <div id="app" class="l-application">
-    <router-view></router-view>
+    <router-view>
+      <span class="icon is-medium"><i class="mdi mdi-account mdi-36px"></i></span>
+    </router-view>
   </div>
 </template>
 
 <script>
-  
   export default {
     name: 'reminder-tool-2',
     components:{
