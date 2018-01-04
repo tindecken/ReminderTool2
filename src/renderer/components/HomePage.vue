@@ -47,65 +47,69 @@
       },
       getBuilds(value){
         if(value === 0){ //Tab Builds
-          console.log('Start - Getting build defs')
           var thiz = this
           this.$store.commit('setIsloadingTrue', this.$store.state)
           getAllBuildDefs(function(data){
             var buildDefsTemp = data.value
             for(let i = 0; i < buildDefsTemp.length; i++){
-                buildDefsTemp[i].lastStatus = ""
-                buildDefsTemp[i].lastResult = ""
-                buildDefsTemp[i].lastBuildLink = ""
-                buildDefsTemp[i].lastBuildNumber = ""
+                buildDefsTemp[i].lastBuild = ""
                 getLastBuildByBuildDefId(buildDefsTemp[i].id, function(dataReturn){
                   if(dataReturn.value[0] != null){
-                    console.log(dataReturn.value[0])
-                    buildDefsTemp[i].lastBuildNumber = dataReturn.value[0].buildNumber
-                    buildDefsTemp[i].lastStatus = dataReturn.value[0].status
-                    buildDefsTemp[i].lastResult = dataReturn.value[0].result
-                    buildDefsTemp[i].lastBuildLink = dataReturn.value[0]._links.web.href
+                    buildDefsTemp[i].lastBuild = dataReturn.value[0]
+                    console.log("--- Last Build ---")
+                    console.log(buildDefsTemp[i].lastBuild)
+                    console.log("--- Last Build ---")
                   }
               })
             }
             thiz.buildDefs = buildDefsTemp
             thiz.$store.commit('setIsloadingFalse', thiz.$store.state)
           })
-          console.log('End - Getting build defs')
         }else if(value === 1){ //Tab Releases
-          console.log('Start - Getting release defs')
           var thiz = this
           this.$store.commit('setIsloadingReleaseTrue', this.$store.state)
           getAllReleaseDefs(function(data){ //Get all Release Definitions
             var releaseDefsTemp = data.value
             for(let i = 0; i < releaseDefsTemp.length; i++){
-                releaseDefsTemp[i].lastNameEnvironment1 = ""
-                releaseDefsTemp[i].lastNameEnvironment2 = ""
-                releaseDefsTemp[i].lastNameEnvironment3 = ""
-                releaseDefsTemp[i].lastNameEnvironment4 = ""
-                releaseDefsTemp[i].lastStatusEnvironment1 = ""
-                releaseDefsTemp[i].lastStatusEnvironment2 = ""
-                releaseDefsTemp[i].lastStatusEnvironment3 = ""
-                releaseDefsTemp[i].lastStatusEnvironment4 = ""
-                releaseDefsTemp[i].lastReleaseName = ""
-                releaseDefsTemp[i].lastBuildLink = ""
+                // releaseDefsTemp[i].lastNameEnvironment1 = ""
+                // releaseDefsTemp[i].lastNameEnvironment2 = ""
+                // releaseDefsTemp[i].lastNameEnvironment3 = ""
+                // releaseDefsTemp[i].lastNameEnvironment4 = ""
+                // releaseDefsTemp[i].lastStatusEnvironment1 = ""
+                // releaseDefsTemp[i].lastStatusEnvironment2 = ""
+                // releaseDefsTemp[i].lastStatusEnvironment3 = ""
+                // releaseDefsTemp[i].lastStatusEnvironment4 = ""
+                // releaseDefsTemp[i].lastReleaseName = ""
+                // releaseDefsTemp[i].lastBuildLink = ""
+                releaseDefsTemp[i].lastRelease = ""
                 getLastReleaseByReleaseDefId(releaseDefsTemp[i].id, function(dataReturn){  //Get last release of one release definition
                   if(dataReturn.value[0] != null){
-                    releaseDefsTemp[i].lastReleaseName = dataReturn.value[0].name
-                    releaseDefsTemp[i].lastReleaseUrl = dataReturn.value[0]._links.web.href
+                    releaseDefsTemp[i].lastRelease = dataReturn.value[0]
+                    console.log("---- Last release ----")
+                      console.log(releaseDefsTemp[i].lastRelease)
+                      console.log("---- Last release ----")
+                    releaseDefsTemp[i].lastRelease.releaseDetail = ""
+                    // releaseDefsTemp[i].lastReleaseName = dataReturn.value[0].name
+                    // releaseDefsTemp[i].lastReleaseUrl = dataReturn.value[0]._links.web.href
                     getDetailOfRelease(dataReturn.value[0].id, function(releaseDetail){
-                      for (var k = 0; k < releaseDetail.environments.length; k++) {
-                        releaseDefsTemp[i]['lastNameEnvironment' + (k +1)] = releaseDetail.environments[k].name
-                        releaseDefsTemp[i]['lastStatusEnvironment' + (k +1)] = releaseDetail.environments[k].status
+                      if(releaseDetail != null){
+                        
+                        releaseDefsTemp[i].lastRelease.releaseDetail = releaseDetail
+                        console.log("---- Relase detail ----")
+                        console.log(releaseDefsTemp[i].lastRelease.releaseDetail)
+                        console.log("---- Relase detail ----")
                       }
+                      // for (var k = 0; k < releaseDetail.environments.length; k++) {
+                      //   releaseDefsTemp[i].lastRelease['lastNameEnvironment' + (k +1)] = releaseDetail.environments[k].name
+                      //   releaseDefsTemp[i].lastRelease['lastStatusEnvironment' + (k +1)] = releaseDetail.environments[k].status
+                      // }
                     })
                   }
               })
             }
             thiz.releasesDefs = releaseDefsTemp
-            console.log(thiz.releasesDefs)
             thiz.$store.commit('setIsloadingReleaseFalse', thiz.$store.state)
           })
-          console.log('End - Getting relase defs')
         }
       }
     },

@@ -15,16 +15,16 @@
               <a v-on:click.stop.prevent="open(props.row._links.web.href)">{{ props.row.name }}</a>
           </b-table-column>
           <b-table-column label="Last Release Name">
-            <a v-on:click.stop.prevent="open(props.row.lastReleaseUrl)">{{ props.row.lastReleaseName }}</a>
+            <a v-on:click.stop.prevent="open(props.row.lastRelease._links.web.href)">{{ props.row.lastRelease.name }}</a>
           </b-table-column>
           <b-table-column label="Environment 1">
             <b-icon v-if="isRejected"
                 icon="account"
                 size="is-small">
             </b-icon>
-            {{ props.row.lastNameEnvironment1 }}  {{ props.row.lastStatusEnvironment1 }}
+            {{ props.row.lastRelease.releaseDetail.environments[0].name }}  {{ props.row.lastRelease.releaseDetail.environments[0].status }}
           </b-table-column>
-          <b-table-column label="Environment 2">
+          <!-- <b-table-column label="Environment 2">
             {{ props.row.lastNameEnvironment2 }}  {{ props.row.lastStatusEnvironment2 }}
           </b-table-column>
           <b-table-column label="Environment 3">
@@ -32,7 +32,7 @@
           </b-table-column>
           <b-table-column label="Environment 4">
             {{ props.row.lastNameEnvironment4 }}  {{ props.row.lastStatusEnvironment4 }}
-          </b-table-column>
+          </b-table-column> -->
       </template>
     </b-table>
   </div>
@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     isRejected: function(){
-      if(this.releases[0].lastStatusEnvironment1 == 'rejected'){
+      if(this.releases[0].lastRelease.releaseDetail.environments[0].status == 'rejected'){
         return true
       }else{
         return false

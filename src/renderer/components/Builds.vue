@@ -14,14 +14,14 @@
                 <a v-on:click.stop.prevent="open(props.row._links.web.href)">{{ props.row.name }}</a>
             </b-table-column>
             <b-table-column label="Last Build">
-                {{ props.row.lastBuildNumber }}
+                {{ props.row.lastBuild.buildNumber }}
             </b-table-column>
             <b-table-column label="Result">
-                <a v-if="props.row.lastResult" v-on:click.stop.prevent="open(props.row.lastBuildLink)">{{ props.row.lastResult }}</a>
-                <a v-else v-on:click.stop.prevent="open(props.row.lastBuildLink)">{{ props.row.lastStatus }}</a>
+                <a v-if="props.row.lastBuild.result" v-on:click.stop.prevent="open(props.row.lastBuild._links.web.href)">{{ props.row.lastBuild.result }}</a>
+                <a v-else v-on:click.stop.prevent="open(props.row.lastBuild._links.web.href)">{{ props.row.lastBuild.status }}</a>
             </b-table-column>
             <b-table-column label="Action">
-                <button disabled="props.row.lastStatus == 'inProgress'" class="button is-primary" v-on:click="queueBuild(props.row.id)">Queue</button>
+                <button disabled="props.row.lastBuild.status == 'inProgress'" class="button is-primary" v-on:click="queueBuild(props.row.id)">Queue</button>
             </b-table-column>
         </template>
       </b-table>
@@ -54,7 +54,6 @@ export default {
     },
     queueBuild(buildDefId){
       queueBuildbyId(buildDefId, function(response){
-        console.log(response)
       })
     }
   },
