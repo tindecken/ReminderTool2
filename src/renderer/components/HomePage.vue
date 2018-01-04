@@ -56,8 +56,11 @@
                 buildDefsTemp[i].lastStatus = ""
                 buildDefsTemp[i].lastResult = ""
                 buildDefsTemp[i].lastBuildLink = ""
+                buildDefsTemp[i].lastBuildNumber = ""
                 getLastBuildByBuildDefId(buildDefsTemp[i].id, function(dataReturn){
                   if(dataReturn.value[0] != null){
+                    console.log(dataReturn.value[0])
+                    buildDefsTemp[i].lastBuildNumber = dataReturn.value[0].buildNumber
                     buildDefsTemp[i].lastStatus = dataReturn.value[0].status
                     buildDefsTemp[i].lastResult = dataReturn.value[0].result
                     buildDefsTemp[i].lastBuildLink = dataReturn.value[0]._links.web.href

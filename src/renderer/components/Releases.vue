@@ -55,8 +55,6 @@ export default {
     },
   },
   computed: {
-      if(this.releases[0].lastStatusEnvironment1 == 'rejected'){
-    
     isRejected: function(){
       if(this.releases[0].lastStatusEnvironment1 == 'rejected'){
         return true
