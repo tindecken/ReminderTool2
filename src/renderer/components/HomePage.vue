@@ -56,9 +56,6 @@
                 getLastBuildByBuildDefId(buildDefsTemp[i].id, function(dataReturn){
                   if(dataReturn.value[0] != null){
                     buildDefsTemp[i].lastBuild = dataReturn.value[0]
-                    console.log("--- Last Build ---")
-                    console.log(buildDefsTemp[i].lastBuild)
-                    console.log("--- Last Build ---")
                   }
               })
             }
@@ -69,42 +66,31 @@
           var thiz = this
           this.$store.commit('setIsloadingReleaseTrue', this.$store.state)
           getAllReleaseDefs(function(data){ //Get all Release Definitions
+            console.log('--- All Release Defs ---')
+            console.log(data.value)
+            console.log('--- All Release Defs ---')
             var releaseDefsTemp = data.value
             for(let i = 0; i < releaseDefsTemp.length; i++){
-                // releaseDefsTemp[i].lastNameEnvironment1 = ""
-                // releaseDefsTemp[i].lastNameEnvironment2 = ""
-                // releaseDefsTemp[i].lastNameEnvironment3 = ""
-                // releaseDefsTemp[i].lastNameEnvironment4 = ""
-                // releaseDefsTemp[i].lastStatusEnvironment1 = ""
-                // releaseDefsTemp[i].lastStatusEnvironment2 = ""
-                // releaseDefsTemp[i].lastStatusEnvironment3 = ""
-                // releaseDefsTemp[i].lastStatusEnvironment4 = ""
-                // releaseDefsTemp[i].lastReleaseName = ""
-                // releaseDefsTemp[i].lastBuildLink = ""
-                releaseDefsTemp[i].lastRelease = ""
-                getLastReleaseByReleaseDefId(releaseDefsTemp[i].id, function(dataReturn){  //Get last release of one release definition
-                  if(dataReturn.value[0] != null){
-                    releaseDefsTemp[i].lastRelease = dataReturn.value[0]
-                    console.log("---- Last release ----")
-                      console.log(releaseDefsTemp[i].lastRelease)
-                      console.log("---- Last release ----")
-                    releaseDefsTemp[i].lastRelease.releaseDetail = ""
-                    // releaseDefsTemp[i].lastReleaseName = dataReturn.value[0].name
-                    // releaseDefsTemp[i].lastReleaseUrl = dataReturn.value[0]._links.web.href
-                    getDetailOfRelease(dataReturn.value[0].id, function(releaseDetail){
-                      if(releaseDetail != null){
-                        
-                        releaseDefsTemp[i].lastRelease.releaseDetail = releaseDetail
-                        console.log("---- Relase detail ----")
-                        console.log(releaseDefsTemp[i].lastRelease.releaseDetail)
-                        console.log("---- Relase detail ----")
-                      }
-                      // for (var k = 0; k < releaseDetail.environments.length; k++) {
-                      //   releaseDefsTemp[i].lastRelease['lastNameEnvironment' + (k +1)] = releaseDetail.environments[k].name
-                      //   releaseDefsTemp[i].lastRelease['lastStatusEnvironment' + (k +1)] = releaseDetail.environments[k].status
-                      // }
-                    })
-                  }
+              releaseDefsTemp[i].lastRelease = ""
+              getLastReleaseByReleaseDefId(releaseDefsTemp[i].id, function(dataReturn){  //Get last release of one release definition
+                if(dataReturn.value[0] != null){
+                  releaseDefsTemp[i].lastRelease = dataReturn.value[0]
+                  console.log("---- Last release ----")
+                  console.log(releaseDefsTemp[i].lastRelease)
+                  console.log("---- Last release ----")
+                  releaseDefsTemp[i].lastRelease.releaseDetail = ""
+                  getDetailOfRelease(releaseDefsTemp[i].lastRelease.id, function(releaseDetailReturn){
+                    console.log('--- Release detail return ---')
+                    console.log(releaseDetailReturn)
+                    console.log('--- Release detail return ---')
+                    if(releaseDetailReturn != null){
+                      releaseDefsTemp[i].lastRelease.releaseDetail = releaseDetailReturn
+                      console.log("---- Release detail ----")
+                      console.log(releaseDefsTemp[i].lastRelease.releaseDetail)
+                      console.log("---- Release detail ----")
+                    }
+                  })
+                }
               })
             }
             thiz.releasesDefs = releaseDefsTemp

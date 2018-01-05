@@ -17,13 +17,16 @@
           <b-table-column label="Last Release Name">
             <a v-on:click.stop.prevent="open(props.row.lastRelease._links.web.href)">{{ props.row.lastRelease.name }}</a>
           </b-table-column>
-          <b-table-column label="Environment 1">
-            <b-icon v-if="isRejected"
-                icon="account"
-                size="is-small">
-            </b-icon>
-            {{ props.row.lastRelease.releaseDetail.environments[0].name }}  {{ props.row.lastRelease.releaseDetail.environments[0].status }}
-          </b-table-column>
+          <div v-for="item in [1, 2, 3, 4]" :key="item.id">
+            <b-table-column label="Environment" + key>
+              <!-- <b-icon v-if="isRejected"
+                  icon="account"
+                  size="is-small">
+              </b-icon> -->
+              {{ item.name }}  {{ item.status }}
+            </b-table-column>
+          </div>
+          
           <!-- <b-table-column label="Environment 2">
             {{ props.row.lastNameEnvironment2 }}  {{ props.row.lastStatusEnvironment2 }}
           </b-table-column>
@@ -55,13 +58,13 @@ export default {
     },
   },
   computed: {
-    isRejected: function(){
-      if(this.releases[0].lastRelease.releaseDetail.environments[0].status == 'rejected'){
-        return true
-      }else{
-        return false
-      }
-    }
+    // isRejected: function(){
+    //   if(this.releases[0].lastRelease.releaseDetail.environments[0].status == 'rejected'){
+    //     return true
+    //   }else{
+    //     return false
+    //   }
+    // }
   },
 };
 </script>
