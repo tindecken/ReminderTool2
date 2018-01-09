@@ -15,17 +15,35 @@
               <a v-on:click.stop.prevent="open(props.row._links.web.href)">{{ props.row.name }}</a>
           </b-table-column>
           <b-table-column label="Last Release Name">
+            <!-- <b-icon v-if="isRejected"
+                icon="account"
+                size="is-small">
+            </b-icon> -->
+            <div v-if="props.row.lastRelease">
             <a v-on:click.stop.prevent="open(props.row.lastRelease._links.web.href)">{{ props.row.lastRelease.name }}</a>
+            </div>
           </b-table-column>
-          <div v-for="item in [1, 2, 3, 4]" :key="item.id">
-            <b-table-column label="Environment" + key>
-              <!-- <b-icon v-if="isRejected"
-                  icon="account"
-                  size="is-small">
-              </b-icon> -->
-              {{ item.name }}  {{ item.status }}
+          <b-table-column label="Environments">
+            <div v-if="props.row.lastRelease.releaseDetail">
+              <span v-for="item in props.row.lastRelease.releaseDetail.environments"
+                :key="item.id"
+                :label="item.name">
+                {{ item.name }} {{item.status}}
+              </span>
+            </div>
+          </b-table-column>
+          <!-- <div v-if="props.row.lastRelease.releaseDetail">
+            <b-table-column v-for="(column, index) in props.row.lastRelease.releaseDetail.environments"
+                :key="index"
+                :label="column.name">
+
+                {{ column.name }}
             </b-table-column>
-          </div>
+          </div> -->
+         
+          
+          
+          
           
           <!-- <b-table-column label="Environment 2">
             {{ props.row.lastNameEnvironment2 }}  {{ props.row.lastStatusEnvironment2 }}
@@ -50,6 +68,7 @@ export default {
   props: ['releases', 'isLoadingRelease'],
   data: function() {
     return {
+      label: []
     }
   },
   methods: {

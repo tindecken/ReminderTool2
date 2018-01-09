@@ -71,25 +71,32 @@
             console.log('--- All Release Defs ---')
             var releaseDefsTemp = data.value
             for(let i = 0; i < releaseDefsTemp.length; i++){
-              releaseDefsTemp[i].lastRelease = ""
+              // releaseDefsTemp[i].lastRelease = {}
               getLastReleaseByReleaseDefId(releaseDefsTemp[i].id, function(dataReturn){  //Get last release of one release definition
-                if(dataReturn.value[0] != null){
+                if(dataReturn.count !== 0){ 
                   releaseDefsTemp[i].lastRelease = dataReturn.value[0]
-                  console.log("---- Last release ----")
+                  console.log(`---- Start Last release ${releaseDefsTemp[i].id}----`)
                   console.log(releaseDefsTemp[i].lastRelease)
-                  console.log("---- Last release ----")
-                  releaseDefsTemp[i].lastRelease.releaseDetail = ""
-                  getDetailOfRelease(releaseDefsTemp[i].lastRelease.id, function(releaseDetailReturn){
-                    console.log('--- Release detail return ---')
-                    console.log(releaseDetailReturn)
-                    console.log('--- Release detail return ---')
-                    if(releaseDetailReturn != null){
-                      releaseDefsTemp[i].lastRelease.releaseDetail = releaseDetailReturn
-                      console.log("---- Release detail ----")
-                      console.log(releaseDefsTemp[i].lastRelease.releaseDetail)
-                      console.log("---- Release detail ----")
-                    }
-                  })
+                  console.log(`---- End Last release ${releaseDefsTemp[i].id}----`)
+                  // releaseDefsTemp[i].lastRelease.releaseDetail = ""
+                  if(releaseDefsTemp[i].lastRelease.name != ""){
+                    getDetailOfRelease(releaseDefsTemp[i].lastRelease.id, function(releaseDetailReturn){
+                      console.log('--- Release detail return ---')
+                      console.log(releaseDetailReturn)
+                      console.log('--- Release detail return ---')
+                      if(releaseDetailReturn.count !== 0){
+                        releaseDefsTemp[i].lastRelease.releaseDetail = releaseDetailReturn
+                        // console.log(`---- Release detail ${releaseDefsTemp[i].id}----`)
+                        // console.log(releaseDefsTemp[i].lastRelease.releaseDetail)
+                        // console.log(`---- Release detail ${releaseDefsTemp[i].id}----`)
+                      }
+                    })
+                  }
+                }else if(dataReturn.count === 0){
+                  console.log('AAAAAAAAAAAAAAAAAAAAAAAAAA')
+                  console.log(releaseDefsTemp[i].lastRelease = )
+                  // releaseDefsTemp[i].lastRelease = ""
+                  console.log('AAAAAAAAAAAAAAAAAAAAAAAAAA')
                 }
               })
             }
