@@ -6,7 +6,8 @@
       :striped="true"
       :bordered="true"
       :loading="$store.state.isLoadingRelease"
-      >
+      default-sort-direction="desc"
+      default-sort="lastReleaseID">
       <template slot-scope="props">
           <b-table-column label="ID" width="40" numeric>
               {{ props.row.id }}
@@ -15,45 +16,23 @@
               <a v-on:click.stop.prevent="open(props.row._links.web.href)">{{ props.row.name }}</a>
           </b-table-column>
           <b-table-column label="Last Release Name">
-            <!-- <b-icon v-if="isRejected"
-                icon="account"
-                size="is-small">
-            </b-icon> -->
-            <div v-if="props.row.lastRelease">
-            <a v-on:click.stop.prevent="open(props.row.lastRelease._links.web.href)">{{ props.row.lastRelease.name }}</a>
-            </div>
+              <a v-on:click.stop.prevent="open(props.row.lastRelease._links.web.href)">{{ props.row.lastRelease.name }}</a>
           </b-table-column>
           <b-table-column label="Environments">
-            <div v-if="props.row.lastRelease.releaseDetail">
-              <span v-for="item in props.row.lastRelease.releaseDetail.environments"
-                :key="item.id"
-                :label="item.name">
-                {{ item.name }} {{item.status}}
-              </span>
+            <div v-for="item in props.row.lastRelease.releaseDetail.environments" :key="item.id">
+              <a v-on:click.stop.prevent="open(props.row.lastRelease.releaseDetail._links.web.href)">{{item.name}} {{item.status}}</a>
             </div>
           </b-table-column>
-          <!-- <div v-if="props.row.lastRelease.releaseDetail">
-            <b-table-column v-for="(column, index) in props.row.lastRelease.releaseDetail.environments"
-                :key="index"
-                :label="column.name">
-
-                {{ column.name }}
-            </b-table-column>
-          </div> -->
-         
-          
-          
-          
-          
-          <!-- <b-table-column label="Environment 2">
-            {{ props.row.lastNameEnvironment2 }}  {{ props.row.lastStatusEnvironment2 }}
+          <b-table-column label="Created On" :visible="true">
+              {{ props.row.lastRelease.releaseDetail.createdOn ? new Date(props.row.lastRelease.releaseDetail.createdOn).toLocaleDateString() : '' }}
+            <!-- </div> -->
           </b-table-column>
-          <b-table-column label="Environment 3">
-            {{ props.row.lastNameEnvironment3 }}  {{ props.row.lastStatusEnvironment3 }}
+          <b-table-column label="Created By">
+            {{props.row.lastRelease.releaseDetail.createdBy ? props.row.lastRelease.releaseDetail.createdBy.displayName : ''}}
           </b-table-column>
-          <b-table-column label="Environment 4">
-            {{ props.row.lastNameEnvironment4 }}  {{ props.row.lastStatusEnvironment4 }}
-          </b-table-column> -->
+          <b-table-column label="Last Release ID" :visible="true" field="lastReleaseID" sortable numeric>
+            {{props.row.lastRelease.id ? props.row.lastRelease.id : 'NA'}}
+          </b-table-column>
       </template>
     </b-table>
   </div>
