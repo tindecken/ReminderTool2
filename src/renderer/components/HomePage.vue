@@ -57,57 +57,47 @@
                   if(dataReturn.value[0] != null){
                     buildDefsTemp[i].lastBuild = dataReturn.value[0]
                   }
-              })
-            }
+            })
+          }
             thiz.buildDefs = buildDefsTemp
             thiz.$store.commit('setIsloadingFalse', thiz.$store.state)
-          })
+        })
         }else if(value === 1){ //Tab Releases
-          var thiz = this
           this.$store.commit('setIsloadingReleaseTrue', this.$store.state)
-          getAllReleaseDefs(function(data){ //Get all Release Definitions
+          var thiz = this
+          getAllReleaseDefs().then(function(result){
+            var releaseDefsTemp = {}
             console.log('<--- All Release Defs ')
-            console.log(data.value)
+            console.log(result.data.value)
             console.log('--- All Release Defs --->')
-            var releaseDefsTemp = data.value
-            worker(releaseDefsTemp, 0, thiz);
+            releaseDefsTemp = result.data.value
+            for(let i = 0; i < releaseDefsTemp.length; i++){
+              releaseDefsTemp[i].lastRelease = {releaseDetail: {}};            
+              getLastReleaseByReleaseDefId(releaseDefsTemp[i].id).then(function(dataReturn){
+                if(dataReturn.data.count !== 0){  //Nếu có dữ liệu LastRelease
+                  releaseDefsTemp[i].lastRelease = dataReturn.data.value[0];                  
+                  releaseDefsTemp[i].lastRelease.releaseDetail = {}
+                  getDetailOfRelease(releaseDefsTemp[i].lastRelease.id).then(function(releaseDetailReturn){
+                    if(releaseDetailReturn.data.count !== 0){ //Nếu có dữ liệu LastRelease.ReleaseDetail
+                      releaseDefsTemp[i].lastRelease.releaseDetail = releaseDetailReturn.data;
+                      console.log(releaseDefsTemp[i].id, releaseDetailReturn.data.environments)
+                    }
+                    thiz.releasesDefs = releaseDefsTemp;
+                    thiz.$store.commit('setIsloadingReleaseFalse', thiz.$store.state)
+                  })
+                }
+              })
+            }
           })
         }
       }
     },
     created: function(){
       this.getBuilds(0)
+      this.getBuilds(1)
     }
   }
  
-function worker(list, i, thiz) {
-  if (i >= list.length) {
-    thiz.releasesDefs = list;
-    thiz.$store.commit('setIsloadingReleaseFalse', thiz.$store.state);
-    return;
-  }
-  list[i].lastRelease = {releaseDetail: {}};            
-  getLastReleaseByReleaseDefId(list[i].id, function(dataReturn){  //Get last release of one release definition
-    if (dataReturn.count !== 0){  //Nếu có dữ liệu LastRelease
-      list[i].lastRelease = dataReturn.value[0];                  
-      list[i].lastRelease.releaseDetail = {}
-      getDetailOfRelease(list[i].lastRelease.id, function(releaseDetailReturn){                    
-        if(releaseDetailReturn.count !== 0){ //Nếu có dữ liệu LastRelease.ReleaseDetail
-          list[i].lastRelease.releaseDetail = releaseDetailReturn;
-          i++;
-          worker(list, i, thiz);
-        } else {
-          i++;
-          worker(list, i, thiz);
-        }       
-      })
-    } else {
-      i++;
-      worker(list, i, thiz);
-    }
-  })
-}
-
 function getAllBuildDefs(callback){
   axios({
     method:'get',
@@ -128,34 +118,31 @@ function getLastBuildByBuildDefId(buildDefId, callback){
   })
 }
 
-function getAllReleaseDefs(callback){
-  axios({
+async function getAllReleaseDefs(){
+  let result = await axios({
     method:'get',
     url:`${collectionVSRMUrl}/${project}/_apis/release/definitions?api-version=4.0-preview.3`,
     auth
-  }).then(function(response){
-    callback(response.data)
   })
+  return result
 }
 
-function getLastReleaseByReleaseDefId(releaseDefId, callback){
-  axios({
+async function getLastReleaseByReleaseDefId(releaseDefId){
+  let result = await axios({
     method:'get',
     url:`https://acomsolutions.vsrm.visualstudio.com/DefaultCollection/${project}/_apis/release/releases?definitionId=${releaseDefId}&api-version=4.0-preview.3&$top=1`,
     auth
-  }).then(function(response){
-    callback(response.data)
   })
+  return result
 }
 
-function getDetailOfRelease(releaseId, callback){
-  axios({
+async function getDetailOfRelease(releaseId){
+  let result = await axios({
     method:'get',
     url:`https://acomsolutions.vsrm.visualstudio.com/DefaultCollection/${project}/_apis/release/releases/${releaseId}?api-version=4.0-preview.3`,
     auth
-  }).then(function(response){
-    callback(response.data)
   })
+  return result
 }
 
 function timeout(ms) {
