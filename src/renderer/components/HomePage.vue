@@ -70,23 +70,7 @@
             console.log(data.value)
             console.log('--- All Release Defs --->')
             var releaseDefsTemp = data.value
-            for(let i = 0; i < releaseDefsTemp.length; i++){
-              releaseDefsTemp[i].lastRelease = {releaseDetail: {}};            
-              getLastReleaseByReleaseDefId(releaseDefsTemp[i].id, function(dataReturn){  //Get last release of one release definition
-                if(dataReturn.count !== 0){  //Nếu có dữ liệu LastRelease
-                  releaseDefsTemp[i].lastRelease = dataReturn.value[0];                  
-                  releaseDefsTemp[i].lastRelease.releaseDetail = {}
-                  getDetailOfRelease(releaseDefsTemp[i].lastRelease.id, function(releaseDetailReturn){                    
-                    if(releaseDetailReturn.count !== 0){ //Nếu có dữ liệu LastRelease.ReleaseDetail
-                      releaseDefsTemp[i].lastRelease.releaseDetail = releaseDetailReturn;
-                      console.log(releaseDefsTemp[i].id, releaseDetailReturn.environments)
-                    }
-                    thiz.releasesDefs = releaseDefsTemp;
-                    thiz.$store.commit('setIsloadingReleaseFalse', thiz.$store.state)
-                  })
-                }
-              })
-            }
+            worker(releaseDefsTemp, 0, thiz);
           })
         }
       }
@@ -96,6 +80,34 @@
     }
   }
  
+function worker(list, i, thiz) {
+  if (i >= list.length) {
+    thiz.releasesDefs = list;
+    thiz.$store.commit('setIsloadingReleaseFalse', thiz.$store.state);
+    return;
+  }
+  list[i].lastRelease = {releaseDetail: {}};            
+  getLastReleaseByReleaseDefId(list[i].id, function(dataReturn){  //Get last release of one release definition
+    if (dataReturn.count !== 0){  //Nếu có dữ liệu LastRelease
+      list[i].lastRelease = dataReturn.value[0];                  
+      list[i].lastRelease.releaseDetail = {}
+      getDetailOfRelease(list[i].lastRelease.id, function(releaseDetailReturn){                    
+        if(releaseDetailReturn.count !== 0){ //Nếu có dữ liệu LastRelease.ReleaseDetail
+          list[i].lastRelease.releaseDetail = releaseDetailReturn;
+          i++;
+          worker(list, i, thiz);
+        } else {
+          i++;
+          worker(list, i, thiz);
+        }       
+      })
+    } else {
+      i++;
+      worker(list, i, thiz);
+    }
+  })
+}
+
 function getAllBuildDefs(callback){
   axios({
     method:'get',
