@@ -55,11 +55,13 @@
     "buefy": "^0.6.2",
     "bulma": "^0.5.1",
     "electron-oauth2": "^3.0.0",
+    "moment": "^2.20.1",
     "vee-validate": "^2.0.0-beta.17",
     "vso-node-api": "^6.2.8-preview",
     "vue": "^2.5.13",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
+    "vue-timeago": "^3.4.2",
     "vuex": "^2.3.1"
   },
   "devDependencies": {

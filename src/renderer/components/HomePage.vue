@@ -88,13 +88,15 @@
                 }
               })
             }
+            
           })
+          
         }
       }
     },
     created: function(){
       this.getBuilds(0)
-      this.getBuilds(1)
+      // this.getBuilds(1)
     }
   }
  
