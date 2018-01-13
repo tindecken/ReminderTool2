@@ -19,14 +19,16 @@
               <a v-on:click.stop.prevent="open(props.row.lastRelease._links.web.href)">{{ props.row.lastRelease.name }}</a>
           </b-table-column>
           <b-table-column label="Deployment status">
-            <div v-for="item in props.row.lastRelease.releaseDetail.environments" :key="item.id">
-              <b-tooltip label="Click to open web" type="is-light" position="is-right" animated>
-                <div v-on:click="open(props.row.lastRelease.releaseDetail._links.web.href)">
-                  <b-tag :type="status(item.status)" size="is-medium" class="my_b_tag">
-                    {{item.name}} {{item.status}}
-                  </b-tag>
-                </div>
-              </b-tooltip>
+            <div style="overflow: hidden; width: 100%">
+              <div style="float: left" v-for="item in props.row.lastRelease.releaseDetail.environments" :key="item.id">
+                <b-tooltip :label="item.status" type="is-light" position="is-right" animated>
+                  <div v-on:click="open(props.row.lastRelease.releaseDetail._links.web.href)">
+                    <b-tag :type="status(item.status)" size="is-medium" class="my-b-tag">
+                      {{item.name}}
+                    </b-tag>
+                  </div>
+                </b-tooltip>
+              </div>
             </div>
           </b-table-column>
           <b-table-column label="Created On" field="lastRelease.releaseDetail.createdOn" sortable>
@@ -36,7 +38,7 @@
             <div v-else>        
             </div>
           </b-table-column>
-          <b-table-column label="Created By"> 
+          <b-table-column label="Created By" width="10"> 
             {{props.row.lastRelease.releaseDetail.createdBy ? props.row.lastRelease.releaseDetail.createdBy.displayName : ''}}
           </b-table-column>
       </template>
@@ -95,7 +97,7 @@ export default {
   tr.is-rejected {
       background: rgb(238,69,31) !important;
   }
-  .my_b_tag{
-    margin-bottom: 2px
+  .my-b-tag{
+    margin-right: 2px
   }
 </style>
