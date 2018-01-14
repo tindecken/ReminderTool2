@@ -52,16 +52,16 @@
           getAllBuildDefs(function(data){
             var buildDefsTemp = data.value
             for(let i = 0; i < buildDefsTemp.length; i++){
-                buildDefsTemp[i].lastBuild = ""
-                getLastBuildByBuildDefId(buildDefsTemp[i].id, function(dataReturn){
-                  if(dataReturn.value[0] != null){
-                    buildDefsTemp[i].lastBuild = dataReturn.value[0]
-                  }
-            })
-          }
+              buildDefsTemp[i].lastBuild = {}
+              getLastBuildByBuildDefId(buildDefsTemp[i].id, function(dataReturn){
+                if(dataReturn.count !== 0){
+                  buildDefsTemp[i].lastBuild = dataReturn.value[0]
+                }
+              })
+            }
             thiz.buildDefs = buildDefsTemp
             thiz.$store.commit('setIsloadingFalse', thiz.$store.state)
-        })
+          })
         }else if(value === 1){ //Tab Releases
           this.$store.commit('setIsloadingReleaseTrue', this.$store.state)
           var thiz = this
@@ -72,7 +72,7 @@
             console.log('--- All Release Defs --->')
             releaseDefsTemp = result.data.value
             for(let i = 0; i < releaseDefsTemp.length; i++){
-              releaseDefsTemp[i].lastRelease = {releaseDetail: {}};            
+              releaseDefsTemp[i].lastRelease = {releaseDetail: {}}           
               getLastReleaseByReleaseDefId(releaseDefsTemp[i].id).then(function(dataReturn){
                 if(dataReturn.data.count !== 0){  //Nếu có dữ liệu LastRelease
                   releaseDefsTemp[i].lastRelease = dataReturn.data.value[0];                  

@@ -21,7 +21,9 @@
                 <a v-else v-on:click.stop.prevent="open(props.row.lastBuild._links.web.href)">{{ props.row.lastBuild.status }}</a>
             </b-table-column>
             <b-table-column label="Action">
-                <button disabled="props.row.lastBuild.status == 'inProgress'" class="button is-primary" v-on:click="queueBuild(props.row.id)">Queue</button>
+              <div v-if="props.row.lastBuild.result">
+                <button :disabled="isDisabled(props.row.lastBuild.result)" class="button is-primary" v-on:click="queueBuild(props.row.id)">Queue</button>
+              </div>
             </b-table-column>
         </template>
       </b-table>
@@ -43,7 +45,7 @@ export default {
   props: ['builds', 'isLoading'],
   data: function() {
     return {
-    }  
+    }
   },
   computed: {
     
@@ -55,6 +57,14 @@ export default {
     queueBuild(buildDefId){
       queueBuildbyId(buildDefId, function(response){
       })
+    },
+    isDisabled: function(status){
+      console.log(status)
+      if(status === 'succeeded' || status === 'failed'){
+        return false
+      }else{
+        return true
+      }
     }
   },
   created: function(){

@@ -56,6 +56,7 @@
     "bulma": "^0.5.1",
     "electron-oauth2": "^3.0.0",
     "moment": "^2.20.1",
+    "sqlite3": "^3.1.13",
     "vee-validate": "^2.0.0-beta.17",
     "vso-node-api": "^6.2.8-preview",
     "vue": "^2.5.13",
