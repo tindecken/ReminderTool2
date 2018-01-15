@@ -72,6 +72,8 @@ export default {
         return "is-danger"
       }else if(status === "notStarted"){
         return "is-info"
+      }else if(status === "inProgress"){
+        return "is-primary"
       }
     }
   },

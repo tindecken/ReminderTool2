@@ -22,7 +22,7 @@
             </b-table-column>
             <b-table-column label="Action">
               <div v-if="props.row.lastBuild.result">
-                <button :disabled="isDisabled(props.row.lastBuild.result)" class="button is-primary" v-on:click="queueBuild(props.row.id)">Queue</button>
+                <button :disabled="isDisabled(props.row.lastBuild.status)" class="button is-primary" v-on:click="queueBuild(props.row.id)">Queue</button>
               </div>
             </b-table-column>
         </template>
@@ -60,10 +60,10 @@ export default {
     },
     isDisabled: function(status){
       console.log(status)
-      if(status === 'succeeded' || status === 'failed'){
-        return false
-      }else{
+      if(status === 'notStarted' || status === 'inProgress'){
         return true
+      }else if(status === 'completed'){
+        return false
       }
     }
   },
@@ -71,18 +71,37 @@ export default {
   }
 }
 
-function queueBuildbyId(buildDefId, callback){
+function checkStatusOfLastBuild(buildDefId, callback){
   axios({
-    method:'post',
-    url:`${collectionUrl}/${project}/_apis/build/builds?api-version=2.0`,
+    method:'get',
+    url:`${collectionUrl}/${project}/_apis/build/builds?api-version=2.0&definitions=${buildDefId}&$top=1`,
     auth,
-    data: {
-      "definition": {
-        "id": buildDefId
-      }
-    } 
   }).then(function(response){
-    callback(response.data)
+    if(response.data.count !== 0){
+      console.log('Status ' + response.data.value[0].status)
+      callback(response.data.value[0].status)
+    }else{
+      callback(null)
+    }
+  })
+}
+
+function queueBuildbyId(buildDefId, callback){
+  checkStatusOfLastBuild(buildDefId, function(status){
+    if(status === 'completed'){
+      axios({
+      method:'post',
+      url:`${collectionUrl}/${project}/_apis/build/builds?api-version=2.0`,
+      auth,
+      data: {
+        "definition": {
+          "id": buildDefId
+        }
+      } 
+    }).then(function(response){
+      callback(response.data)
+    })
+    }
   })
 }
 
