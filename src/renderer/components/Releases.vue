@@ -26,6 +26,7 @@
                     <b-tag :type="status(item.status)" size="is-medium" class="my-b-tag">
                       {{item.name}}
                     </b-tag>
+                    <button class="button is-primary" v-on:click="run(props.row.id)">Run</button>
                   </div>
                 </b-tooltip>
               </div>
@@ -70,7 +71,7 @@ export default {
         return "is-warning"
       }else if(status === "rejected"){
         return "is-danger"
-      }else if(status === "notStarted"){
+      }else if(status === "notStarted" || status === 'canceled'){
         return "is-info"
       }else if(status === "inProgress"){
         return "is-primary"
