@@ -1,22 +1,29 @@
-# reminder-tool-2
+> Simple reminder tool
 
-> An electron-vue project
+#### Feature
 
-#### Build Setup
+* Input your time time in minutes, when on time, the logo is change to ```diff - red```
+* Hover to tray icon to know how many seconds left
+* Double click to tray icon to count from begining
 
+#### Installation
+
+* Get dependencies
 ``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:9080
-npm run dev
-
-# build electron application for production
-npm run build
-
-
+cd ReminderTool2
+yarn
 ```
 
----
+* Run in dev mode
+``` bash
+yarn run dev
+```
 
+* Build for production
+``` bash
+yarn run build
+```
+Check build folder
+
+#### Info
 This project was generated with [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about the original structure can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
