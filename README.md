@@ -1,5 +1,13 @@
 > Simple reminder tool
 
+#### Screenshot
+
+![app](https://i.imgur.com/XXsy3tM.png)
+
+![running](https://i.imgur.com/rVLNJr1.png)
+
+![on time](https://i.imgur.com/ZjWCTv5.png)
+
 #### Feature
 
 * Input your time time in minutes, when on time, the logo is change to ```diff - red```
