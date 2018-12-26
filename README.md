@@ -10,7 +10,7 @@
 
 #### Feature
 
-* Input your time in minutes, when on time, the logo is change to red color
+* Input your time in minutes, when on time, the logo will be changed to red color
 * Hover to tray icon to know how many seconds left
 * Double click to tray icon to count from begining
 
